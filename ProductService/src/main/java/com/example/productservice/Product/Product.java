@@ -1,0 +1,100 @@
+package com.example.productservice.Product;
+
+import java.io.Serializable;
+
+import com.example.productservice.ShippingCompany.SellingCompany;
+import jakarta.persistence.*;
+
+@Entity
+public class Product implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+    private String name;
+    private String description;
+    private double price;
+    private int quantity;
+    private String state;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "selling_company_id")
+    private SellingCompany sellingCompany;
+
+    public Product(){
+        this.state="available";
+    }
+
+    public Product(String name, String description, double price, int quantity, SellingCompany sellingCompany) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.state = "Available";
+        this.sellingCompany = sellingCompany;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setSellingCompany(SellingCompany sellingCompany) {
+        this.sellingCompany = sellingCompany;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", state='" + state + '\'' +
+                ", sellingCompany=" + sellingCompany +
+                '}';
+    }
+}
