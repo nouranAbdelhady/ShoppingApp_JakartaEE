@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from '../customer.service';
+import { CustomerService } from './customer.service';
 
 @Component({
   selector: 'app-customer-component',
   templateUrl: './customer-component.component.html',
   styleUrls: ['./customer-component.component.css']
 })
-export class CustomerComponentComponent {
+export class CustomerComponent {
   customers: any[] = [];
 
   constructor(private customerService: CustomerService) { }

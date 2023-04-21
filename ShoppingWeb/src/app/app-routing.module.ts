@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CustomerComponentComponent } from './customer-component/customer-component.component';
+import { CustomerComponent } from './User/Customer/customer-component.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/customers', pathMatch: 'full' },
-  { path: 'customers', component: CustomerComponentComponent }
+  { path: 'customers', component: CustomerComponent }
 ];
 
 @NgModule({

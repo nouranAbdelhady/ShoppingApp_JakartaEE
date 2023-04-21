@@ -1,4 +1,4 @@
-<p>user-component works!</p>
+<p>Admin Component!</p>
 <table>
     <thead>
       <tr>
@@ -6,14 +6,16 @@
         <th>Name</th>
         <th>Email</th>
         <th>Password</th>
+        <th>Type</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of customers">
+      <tr *ngFor="let user of admins">
         <td>{{ user.id }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.password }}</td>
+        <td>{{ user.type }}</td>
       </tr>
     </tbody>
   </table>
