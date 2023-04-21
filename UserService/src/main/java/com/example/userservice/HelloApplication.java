@@ -1,4 +1,4 @@
-package com.example.customerservice;
+package com.example.userservice;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

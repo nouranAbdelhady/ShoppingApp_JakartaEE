@@ -1,6 +1,6 @@
-package com.example.customerservice.GeographicalRegion;
+package com.example.userservice.GeographicalRegion;
 
-import com.example.customerservice.Customer.Customer;
+import com.example.userservice.User.Userr;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Stateless
 public class GeographicalRegionService {
-    @PersistenceContext(unitName = "customer")
+    @PersistenceContext(unitName = "userr")
     private EntityManager entityManager;
 
     @PostConstruct
@@ -35,7 +35,7 @@ public class GeographicalRegionService {
     }
 
     public GeographicalRegion getRegionById(int id) {
-        return entityManager.find(GeographicalRegion.class, id);
+        return entityManager.find(GeographicalRegion.class, (long) id);
     }
 
     public GeographicalRegion getRegionByName(String name) {
@@ -57,10 +57,10 @@ public class GeographicalRegionService {
         entityManager.remove(region);
     }
 
-    public List<Customer> getAllCustomersForRegion(GeographicalRegion region) {
-        TypedQuery<Customer> query = entityManager.createQuery("SELECT c FROM Customer c WHERE c.geographicalRegion = :region", Customer.class);
+
+    public List<Userr> getAllCustomersForRegion(GeographicalRegion region) {
+        TypedQuery<Userr> query = entityManager.createQuery("SELECT c FROM Userr c WHERE c.geographicalRegion = :region", Userr.class);
         query.setParameter("region", region);
         return query.getResultList();
     }
-
 }

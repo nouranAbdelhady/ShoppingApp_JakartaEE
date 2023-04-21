@@ -1,27 +1,29 @@
-package com.example.customerservice.Customer;
+package com.example.userservice.User;
 
-import com.example.customerservice.GeographicalRegion.GeographicalRegion;
+import com.example.userservice.GeographicalRegion.GeographicalRegion;
 import jakarta.persistence.*;
 
 @Entity
-public class Customer {
+public class Userr {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private long id;
     private String username;
     private String fullname;
     private String email;
     private String password;
     private boolean is_logged_in;
 
+    private String type; // customer or admin
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "geographical_region_id")
     private GeographicalRegion geographicalRegion;
 
-    public Customer() {
+    public Userr() {
     }
 
-    public Customer(String username, String fullname, String email, String password) {
+    public Userr(String username, String fullname, String email, String password) {
         this.username = username;
         this.fullname = fullname;
         this.email = email;
@@ -30,7 +32,7 @@ public class Customer {
         //this.region = region;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -78,6 +80,7 @@ public class Customer {
         this.is_logged_in = is_logged_in;
     }
 
+
     public GeographicalRegion getGeographicalRegion() {
         return geographicalRegion;
     }
@@ -86,14 +89,30 @@ public class Customer {
         this.geographicalRegion = geographicalRegion;
     }
 
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Boolean isAdmin() {
+        return this.type.equals("Admin");
+    }
+
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Userr{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", fullname='" + fullname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", is_logged_in=" + is_logged_in +
+                ", type='" + type + '\'' +
+                //", geographicalRegion=" + geographicalRegion +
                 '}';
     }
 }

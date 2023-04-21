@@ -1,13 +1,13 @@
-package com.example.customerservice.GeographicalRegion;
+package com.example.userservice.GeographicalRegion;
 
-import com.example.customerservice.Customer.Customer;
+import com.example.userservice.User.Userr;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
-@Path("/regions")     //http://localhost:8080/CustomerService-1.0-SNAPSHOT/api/locations
+@Path("/regions")     //http://localhost:8080/UserService-1.0-SNAPSHOT/api/regions
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class GeographicalRegionResource {
@@ -50,9 +50,10 @@ public class GeographicalRegionResource {
         geographicalRegionService.deleteRegion(id);
     }
 
+
     @GET
     @Path("/{id}/customers")
-    public List<Customer> getAllCustomersForRegion(@PathParam("id") int id) {
+    public List<Userr> getAllCustomersForRegion(@PathParam("id") int id) {
         GeographicalRegion region = geographicalRegionService.getRegionById(id);
         return geographicalRegionService.getAllCustomersForRegion(region);
     }

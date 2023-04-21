@@ -1,6 +1,6 @@
-package com.example.customerservice.GeographicalRegion;
+package com.example.userservice.GeographicalRegion;
 
-import com.example.customerservice.Customer.Customer;
+import com.example.userservice.User.Userr;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,12 +10,12 @@ public class GeographicalRegion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private long id;
 
     String name;
 
     @OneToMany(mappedBy = "geographicalRegion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Customer> customers;
+    private List<Userr> userrs;
 
     public GeographicalRegion() {
     }
@@ -24,7 +24,7 @@ public class GeographicalRegion {
         this.name = name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -40,8 +40,8 @@ public class GeographicalRegion {
         this.name = name;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setUsers(List<Userr> userrs) {
+        this.userrs = userrs;
     }
 
 }
