@@ -1,5 +1,6 @@
 package com.example.customerservice.Customer;
 
+import com.example.customerservice.GeographicalRegion.GeographicalRegion;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,11 @@ public class Customer {
     private String email;
     private String password;
     private boolean is_logged_in;
-    //private String region;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "geographical_region_id")
+    private GeographicalRegion geographicalRegion;
+
     public Customer() {
     }
 
@@ -73,6 +78,14 @@ public class Customer {
         this.is_logged_in = is_logged_in;
     }
 
+    public GeographicalRegion getGeographicalRegion() {
+        return geographicalRegion;
+    }
+
+    public void setGeographicalRegion(GeographicalRegion geographicalRegion) {
+        this.geographicalRegion = geographicalRegion;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -83,13 +96,4 @@ public class Customer {
                 ", password='" + password + '\'' +
                 '}';
     }
-
-    /*public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-     */
 }

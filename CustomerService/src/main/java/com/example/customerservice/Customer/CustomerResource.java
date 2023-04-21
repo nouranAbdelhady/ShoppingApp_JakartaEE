@@ -29,4 +29,29 @@ public class CustomerResource {
         customerService.addCustomer(customer);
         return customer;
     }
+
+    @PUT
+    @Path("/{CustomerId}")
+    public boolean updateCustomer(@PathParam("CustomerId") int id, Customer customer) {
+        customer.setId(id);
+        return customerService.updateCustomer(customer);
+    }
+
+    @DELETE
+    @Path("/{CustomerId}")
+    public boolean deleteCustomer(@PathParam("CustomerId") int id) {
+        return customerService.deleteCustomer(customerService.getCustomertById(id));
+    }
+
+    @PUT
+    @Path("/login")
+    public boolean login(Customer customer) {
+        return customerService.login(customer);
+    }
+
+    @PUT
+    @Path("/logout")
+    public boolean logout(Customer customer) {
+        return customerService.logout(customer.getUsername());
+    }
 }
