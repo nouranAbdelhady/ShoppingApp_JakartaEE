@@ -10,6 +10,8 @@ import {RegisterComponent} from "./Views/Register/register.component";
 import {LoginComponent} from "./Views/Login/login.component";
 import {FormsModule} from "@angular/forms";
 import {ConfirmComponent} from "./Views/Register/confirmation/confirm.component";
+import {HomepageComponent} from "./Views/Homepage/homepage.compoent";
+import {NoneComponent} from "./Views/None/none-component";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import {ConfirmComponent} from "./Views/Register/confirmation/confirm.component"
     AdminComponent,
     RegisterComponent,
     ConfirmComponent,
-    LoginComponent
+    LoginComponent,
+    HomepageComponent,
+    NoneComponent
   ],
   imports: [
     BrowserModule,

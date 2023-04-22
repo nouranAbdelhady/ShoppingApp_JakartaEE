@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage</title>
+</head>
+<body>
+<div *ngIf="!this.loggedIn">
+  <h2>Not logged in</h2>
+  <a routerLink="/">Go Back</a>
+  <br>
+</div>
+<div *ngIf="this.loggedIn">
+  <h1>Welcome</h1>
+  <h2>Logged in as {{this.loggedInUser.username}}</h2>
+  <a (click)="logoutUser()">Logout</a>
+
+  <div *ngIf="this.loggedInUser.type === 'Admin'">
+    <h4>Admin!</h4>
+    <app-admin-component></app-admin-component>
+  </div>
+  <div *ngIf="this.loggedInUser.type == 'Customer'">
+    <h4>Customer!</h4>
+    <app-customer-component></app-customer-component>
+  </div>
+
+</div>
+
+</body>
+</html>

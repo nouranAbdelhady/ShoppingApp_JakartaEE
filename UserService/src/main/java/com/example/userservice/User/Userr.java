@@ -3,8 +3,10 @@ package com.example.userservice.User;
 import com.example.userservice.GeographicalRegion.GeographicalRegion;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
-public class Userr {
+public class Userr implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

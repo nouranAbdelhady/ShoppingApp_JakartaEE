@@ -17,6 +17,11 @@ public class UserService {
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
+    @PostConstruct
+    public void testInit() {
+        System.out.println("User service initialized");
+    }
+
     public List<Userr> getAllUsers() {
         TypedQuery<Userr> query = entityManager.createQuery("SELECT c FROM Userr c", Userr.class);
         List<Userr> userrs = query.getResultList();

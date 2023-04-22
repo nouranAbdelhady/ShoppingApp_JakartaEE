@@ -1,35 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { User } from 'src/app/User/user.model';
-import { UserService } from 'src/app/User/user.service'
-import {AppComponent} from "../../app.component";
+import {Component, OnInit} from "@angular/core";
+import {User} from 'src/app/User/user.model';
+import {Router} from '@angular/router';
+import {HomepageComponent} from "../Homepage/homepage.compoent";
+import {AuthService} from "../../User/auth.service";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent  {
+export class LoginComponent {
   user: User = {
     username: '',
     password: ''
   };
   loggedIn = false;
 
-  loggedInUser: User = {
-    id: '',
-    username: '',
-    password: '',
-    email: '',
-    fullname: '',
-    type: '',
-    is_logged_in: false
-  };
-
-  setLoggedInUser(User: User){
-    this.loggedInUser = User;
+  constructor(private authService: AuthService, private router: Router, private homepage: HomepageComponent) {
   }
-
-  constructor(private  userService: UserService, private appComponent: AppComponent) {}
 
   loginUser(): void {
     const data = {
@@ -37,19 +25,16 @@ export class LoginComponent  {
       password: this.user.password
     };
 
-    this.userService.login(data)
-      .subscribe({
-        next: (res) => {
-          console.log(res)
-          console.log(data);
-          if(res!=null){
-            this.loggedIn = true;
-            console.log("Logged in user:"+res);
-            this.setLoggedInUser(res);
-          }
-        },
-        error: (e) => console.error(e)
-      });
+    console.log(data)
+    this.authService.login(data).subscribe({
+      next: (res) => {
+        console.log(res)
+        if (res != null) {
+          this.loggedIn = true;
+          console.log("logged in: true");
+          this.router.navigate(['/homepage']).then(r => console.log("Navigated to homepage"));
+        }
+      }
+    })
   }
-
 }

@@ -34,22 +34,7 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="loggedIn">
-    <h4>User logged in successfully!</h4>
-
-    <div *ngIf="loggedInUser.type === 'Admin'">
-      <h4>Admin!</h4>
-      <app-admin-component></app-admin-component>
-    </div>
-    <div *ngIf="loggedInUser.type == 'Customer'">
-      <h4>Customer!</h4>
-      <app-customer-component></app-customer-component>
-    </div>
-
-  </div>
 </div>
-
 <footer>
   <p>
     Shopping App
