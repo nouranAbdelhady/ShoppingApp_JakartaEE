@@ -57,13 +57,13 @@ public class UserResource {
 
     @PUT
     @Path("/login")
-    public boolean login(Userr userr) {
+    public Userr login(Userr userr) {
         return userService.login(userr);
     }
 
     @PUT
     @Path("/logout")
-    public boolean logout(Userr userr) {
+    public Userr logout(Userr userr) {
         return userService.logout(userr.getUsername());
     }
 }

@@ -78,26 +78,26 @@ public class UserService {
         return query.getSingleResult();
     }
 
-    public boolean login(Userr userr) {
+    public Userr login(Userr userr) {
         String username = userr.getUsername();
         String password = userr.getPassword();
         Userr targetedUserr = getUserByUsername(username);
         if (targetedUserr.getPassword().equals(password)) {
             targetedUserr.setIs_logged_in(true);
             updateUser(targetedUserr);
-            return true;
+            return targetedUserr;
         }
-        return false;
+        return null;
     }
 
-    public boolean logout(String username) {
+    public Userr logout(String username) {
         Userr targetedUserr = getUserByUsername(username);
         if (targetedUserr.isIs_logged_in()) {
             targetedUserr.setIs_logged_in(false);
             updateUser(targetedUserr);
-            return true;
+            return targetedUserr;
         }
-        return false;
+        return null;
     }
 
 }

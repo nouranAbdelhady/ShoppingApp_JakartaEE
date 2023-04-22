@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from './customer.service';
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-customer-component',
@@ -9,14 +9,14 @@ import { CustomerService } from './customer.service';
 export class CustomerComponent {
   customers: any[] = [];
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllCustomers();
   }
 
   getAllCustomers() {
-    this.customerService.getAllCustomers().subscribe({
+    this.userService.getAllCustomers().subscribe({
       next: (data: any[]) => {
         this.customers = data;
         console.log(data);

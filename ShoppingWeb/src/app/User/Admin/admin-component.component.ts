@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AdminService} from "./admin.service";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-admin-component',
@@ -9,14 +9,14 @@ import {AdminService} from "./admin.service";
 export class AdminComponent {
   admins: any[] = [];
 
-  constructor(private adminService: AdminService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllAdmins();
   }
 
   getAllAdmins() {
-    this.adminService.getAllAdmins().subscribe({
+    this.userService.getAllAdmins().subscribe({
       next: (data: any[]) => {
         this.admins = data;
         console.log(data);

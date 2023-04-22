@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Homepage</title>
+</head>
+<body>
+<div class="container" id="container">
+  <div *ngIf="!loggedIn">
+    <div class="form-container sign-in-container">
+      <form>
+        <h1>Login</h1>
+        <input type="text" [(ngModel)]="user.username" name="username" placeholder="Username"/>
+        <input type="password" [(ngModel)]="user.password" name="password" placeholder="Password"/>
+        <a href="#">Forgot your password?</a>
+        <button (click)="loginUser()">Login</button>
+      </form>
+
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Don't have an account</h1>
+          <p>Enter your personal details and start shopping with us</p>
+          <a [routerLink]="['/register']">
+            <button class="ghost" id="signUp">Sign Up</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loggedIn">
+    <h4>User logged in successfully!</h4>
+
+    <div *ngIf="loggedInUser.type === 'Admin'">
+      <h4>Admin!</h4>
+      <app-admin-component></app-admin-component>
+    </div>
+    <div *ngIf="loggedInUser.type == 'Customer'">
+      <h4>Customer!</h4>
+      <app-customer-component></app-customer-component>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p>
+    Shopping App
+  </p>
+</footer>
+
+</body>
+</html>

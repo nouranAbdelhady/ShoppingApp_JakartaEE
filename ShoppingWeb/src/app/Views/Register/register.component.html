@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+<body>
+<div class="main-block">
+  <h1>Registration</h1>
+  <form action="/">
+    <hr>
+    <hr>
+    <label id="icon_fullname" for="fullname"><i class="fas fa-user"></i></label>
+    <input type="text" [(ngModel)]="user.fullname" name="fullname" id="fullname" placeholder="Fullname" required/>
+    <br>
+    <label id="icon_username" for="username"><i class="fas fa-user"></i></label>
+    <input type="text" [(ngModel)]="user.username" name="username" id="username" placeholder="Username" required/>
+    <br>
+    <label id="icon_password" for="password"><i class="fas fa-unlock-alt"></i></label>
+    <input type="password" [(ngModel)]="user.password" name="password" id="password" placeholder="Password" required/>
+    <br>
+    <label id="icon_email" for="email"><i class="fas fa-envelope"></i></label>
+    <input type="text" [(ngModel)]="user.email" name="email" id="email" placeholder="Email" required/>
+    <hr>
+    <div class="admin">
+      <label>
+        <input type="radio" name="userType" [(ngModel)]="userType" value="Admin">
+        Admin
+      </label>
+      <label>
+        <input type="radio" name="userType" [(ngModel)]="userType" value="Customer">
+        Customer
+      </label>
+    </div>
+    <hr>
+    <div class="btn-block">
+      <a [routerLink]="['/confirm']">
+      <button (click)="registerUser()" type="submit" href="/">Submit</button>
+      </a>
+    </div>
+  </form>
+</div>
+</body>
+</html>
