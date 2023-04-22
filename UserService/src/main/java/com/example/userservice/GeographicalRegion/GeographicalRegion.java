@@ -9,10 +9,11 @@ import java.util.List;
 public class GeographicalRegion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    String name;
+    @Column(unique = true)
+    String name;        // Unique name
 
     @OneToMany(mappedBy = "geographicalRegion", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Userr> userrs;

@@ -3,31 +3,15 @@ package com.example.userservice.GeographicalRegion;
 import com.example.userservice.User.Userr;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Stateless
 public class GeographicalRegionService {
-    @PersistenceContext(unitName = "userr")
-    private EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("userr");
 
-    @PostConstruct
-    public void addDummyData() {
-        // Add dummy data for testing
-        GeographicalRegion region1 = new GeographicalRegion("Zamalek");
-        GeographicalRegion region2 = new GeographicalRegion("Agouza");
-        GeographicalRegion region3 = new GeographicalRegion("Heliopolis");
-        GeographicalRegion region4 = new GeographicalRegion("Nasr City");
-        GeographicalRegion region5 = new GeographicalRegion("New Cairo");
-        entityManager.persist(region1);
-        entityManager.persist(region2);
-        entityManager.persist(region3);
-        entityManager.persist(region4);
-        entityManager.persist(region5);
-    }
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public List<GeographicalRegion> getAllRegions() {
         TypedQuery<GeographicalRegion> query = entityManager.createQuery("SELECT r FROM GeographicalRegion r", GeographicalRegion.class);
@@ -35,7 +19,7 @@ public class GeographicalRegionService {
     }
 
     public GeographicalRegion getRegionById(int id) {
-        return entityManager.find(GeographicalRegion.class, (long) id);
+        return entityManager.find(GeographicalRegion.class, id);
     }
 
     public GeographicalRegion getRegionByName(String name) {
@@ -45,16 +29,22 @@ public class GeographicalRegionService {
     }
 
     public void addRegion(GeographicalRegion region) {
+        entityManager.getTransaction().begin();
         entityManager.persist(region);
+        entityManager.getTransaction().commit();
     }
 
     public void updateRegion(GeographicalRegion region) {
+        entityManager.getTransaction().begin();
         entityManager.merge(region);
+        entityManager.getTransaction().commit();
     }
 
     public void deleteRegion(int id) {
         GeographicalRegion region = getRegionById(id);
+        entityManager.getTransaction().begin();
         entityManager.remove(region);
+        entityManager.getTransaction().commit();
     }
 
 

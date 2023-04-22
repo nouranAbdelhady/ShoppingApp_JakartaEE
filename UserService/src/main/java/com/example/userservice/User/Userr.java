@@ -6,8 +6,11 @@ import jakarta.persistence.*;
 @Entity
 public class Userr {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    // Unique username
+    @Column(unique = true)
     private String username;
     private String fullname;
     private String email;

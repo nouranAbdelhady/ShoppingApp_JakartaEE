@@ -1,0 +1,58 @@
+CREATE database userr;
+USE userr;
+CREATE TABLE GeographicalRegion
+(
+    id   INT          NOT NULL auto_increment,
+    name VARCHAR(255) NULL,
+    CONSTRAINT pk_geographicalregion PRIMARY KEY (id)
+);
+
+ALTER TABLE GeographicalRegion
+    ADD CONSTRAINT uc_geographicalregion_name UNIQUE (name);
+    
+CREATE TABLE Userr
+(
+    id                     INT          NOT NULL auto_increment,
+    username               VARCHAR(255) NULL,
+    fullname               VARCHAR(255) NULL,
+    email                  VARCHAR(255) NULL,
+    password               VARCHAR(255) NULL,
+    is_logged_in           BIT(1)       NOT NULL,
+    type                   VARCHAR(255) NULL,
+    geographical_region_id INT          NULL,
+    CONSTRAINT pk_userr PRIMARY KEY (id)
+);
+
+ALTER TABLE Userr
+    ADD CONSTRAINT uc_userr_username UNIQUE (username);
+
+ALTER TABLE Userr
+    ADD CONSTRAINT FK_USERR_ON_GEOGRAPHICAL_REGION FOREIGN KEY (geographical_region_id) REFERENCES GeographicalRegion (id);
+
+-----------------------------------------------------------------------------------------------------------------------------
+CREATE database product;
+USE product;
+CREATE TABLE selling_company
+(
+    id           INT AUTO_INCREMENT NOT NULL,
+    name         VARCHAR(255)       NULL,
+    password     VARCHAR(255)       NULL,
+    is_logged_in BIT(1)             NULL,
+    CONSTRAINT pk_selling_company PRIMARY KEY (id)
+);
+ALTER TABLE selling_company
+    ADD CONSTRAINT uc_selling_company_name UNIQUE (name);
+CREATE TABLE Product
+(
+    id                 INT AUTO_INCREMENT NOT NULL,
+    name               VARCHAR(255)       NULL,
+    `description`      VARCHAR(255)       NULL,
+    price              DOUBLE             NOT NULL,
+    quantity           INT                NOT NULL,
+    state              VARCHAR(255)       NULL,
+    selling_company_id INT                NULL,
+    CONSTRAINT pk_product PRIMARY KEY (id)
+);
+
+ALTER TABLE Product
+    ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);

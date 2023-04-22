@@ -63,4 +63,22 @@ public class SellingCompanyResource {
     public List<Product> getProductsBySellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId) {
         return sellingCompanyService.getProductsBySellingCompany(sellingCompanyId);
     }
+
+    @PUT
+    @Path("/login")
+    public boolean login (SellingCompany sellingCompany) {
+        return sellingCompanyService.login(sellingCompany.getName(), sellingCompany.getPassword());
+    }
+
+    @PUT
+    @Path("/logout")
+    public void logout (SellingCompany sellingCompany) {
+        sellingCompanyService.logout(sellingCompany.getName());
+    }
+
+    @DELETE
+    @Path("/{sellingCompanyId}/products/{productId}")
+    public void deleteProductFromSellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId, @PathParam("productId") int productId) {
+        sellingCompanyService.deleteProductFromSellingCompany(sellingCompanyId, productId);
+    }
 }

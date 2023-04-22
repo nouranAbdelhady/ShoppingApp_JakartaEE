@@ -4,34 +4,23 @@ import com.example.productservice.Product.Product;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
 @Stateless
 public class SellingCompanyService {
-    @PersistenceContext(unitName = "product")
-    private EntityManager entityManager;
 
-    @PostConstruct
-    public void addDummyData() {
-        // Adds dummy data to the database
-        SellingCompany sellingCompany = new SellingCompany("Selling Company 1");
-        entityManager.persist(sellingCompany);
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("product");
 
-        SellingCompany sellingCompany2 = new SellingCompany("Selling Company 2");
-        Product product1 = new Product("Product 1", "Product 1 description", 4000,10, sellingCompany2);
-        Product product2 = new Product("Product 2", "Product 2 description", 5000,10, sellingCompany2);
-        sellingCompany2.addProduct(product1);
-        sellingCompany2.addProduct(product2);
-        entityManager.persist(sellingCompany2);
-
-        entityManager.persist(product1);
-        entityManager.persist(product2);
-    }
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public void addSellingCompany(SellingCompany sellingCompany) {
+        entityManager.getTransaction().begin();
         entityManager.persist(sellingCompany);
+        entityManager.getTransaction().commit();;
     }
 
     public SellingCompany getSellingCompanyById(int id) {
@@ -43,22 +32,74 @@ public class SellingCompanyService {
     }
 
     public void updateSellingCompany(SellingCompany sellingCompany) {
+        entityManager.getTransaction().begin();
         entityManager.merge(sellingCompany);
+        entityManager.getTransaction().commit();
     }
 
     public void deleteSellingCompany(SellingCompany sellingCompany) {
+        entityManager.getTransaction().begin();
         entityManager.remove(sellingCompany);
+        entityManager.getTransaction().commit();
     }
 
     public void addProductToSellingCompany(SellingCompany sellingCompany, Product product) {
         sellingCompany.addProduct(product);
+        entityManager.getTransaction().begin();
         entityManager.merge(sellingCompany);
+        entityManager.getTransaction().commit();
     }
 
     public List<Product> getProductsBySellingCompany(int sellingCompanyId) {
         return entityManager.createQuery("SELECT p FROM Product p WHERE p.sellingCompany.id = :sellingCompanyId", Product.class)
                 .setParameter("sellingCompanyId", sellingCompanyId)
                 .getResultList();
+    }
+
+    public boolean login (String name, String password) {
+        SellingCompany sellingCompany = entityManager.createQuery("SELECT s FROM SellingCompany s WHERE s.name = :name", SellingCompany.class)
+                .setParameter("name", name)
+                .getSingleResult();
+        if (sellingCompany.getPassword().equals(password)) {
+            sellingCompany.setIs_logged_in(true);
+            entityManager.getTransaction().begin();
+            entityManager.merge(sellingCompany);
+            entityManager.getTransaction().commit();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean logout (String name) {
+        SellingCompany sellingCompany = entityManager.createQuery("SELECT s FROM SellingCompany s WHERE s.name = :name", SellingCompany.class)
+                .setParameter("name", name)
+                .getSingleResult();
+        if (sellingCompany.getIs_logged_in()) {
+            sellingCompany.setIs_logged_in(false);
+            entityManager.getTransaction().begin();
+            entityManager.merge(sellingCompany);
+            entityManager.getTransaction().commit();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteProductFromSellingCompany(int sellingCompanyId, int productId) {
+        SellingCompany sellingCompany = getSellingCompanyById(sellingCompanyId);
+        Product product = entityManager.createQuery("SELECT p FROM Product p WHERE p.id = :productId", Product.class)
+                .setParameter("productId", productId)
+                .getSingleResult();
+        if (sellingCompany.getProducts().contains(product)) {
+            sellingCompany.removeProduct(product);
+            entityManager.getTransaction().begin();
+            entityManager.merge(sellingCompany);
+
+            //remove from products table
+            entityManager.remove(product);
+            entityManager.getTransaction().commit();
+            return true;
+        }
+        return false;
     }
 
 }

@@ -15,9 +15,11 @@ import org.passay.PasswordGenerator;
 @Table(name = "selling_company")
 public class SellingCompany {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;        //unique
+    // unique
+    @Column(unique = true)
+    private String name;
     private String password;        //auto generated
 
     private Boolean is_logged_in;

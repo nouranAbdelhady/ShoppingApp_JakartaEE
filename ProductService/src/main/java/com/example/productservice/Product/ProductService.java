@@ -2,17 +2,15 @@ package com.example.productservice.Product;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Stateless
 public class ProductService {
-    @PersistenceContext(unitName = "product")
-    private EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("product");
 
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public List<Product> getAllProducts() {
         TypedQuery<Product> query = entityManager.createQuery("SELECT p FROM Product p", Product.class);
@@ -25,11 +23,15 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
+        entityManager.getTransaction().begin();
         entityManager.persist(product);
+        entityManager.getTransaction().commit();
     }
 
     public void updateProduct(Product product) {
+        entityManager.getTransaction().begin();
         entityManager.merge(product);
+        entityManager.getTransaction().commit();
     }
     // get products based on state
     public List<Product> getProductsByState(String state) {
