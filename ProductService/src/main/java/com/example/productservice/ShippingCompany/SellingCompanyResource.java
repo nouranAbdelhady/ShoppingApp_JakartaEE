@@ -28,6 +28,11 @@ public class SellingCompanyResource {
     public SellingCompany getSellingCompanyById(@PathParam("sellingCompanyId") int id) {
         return sellingCompanyService.getSellingCompanyById(id);
     }
+    @GET
+    @Path("/name/{name}")
+    public SellingCompany getSellingCompanyByName(@PathParam("name") String name) {
+        return sellingCompanyService.getSellingCompanyByName(name);
+    }
 
     @POST
     public SellingCompany addSellingCompany(SellingCompany sellingCompany) {
@@ -36,17 +41,16 @@ public class SellingCompanyResource {
     }
 
     @PUT
-    @Path("/{sellingCompanyId}")
-    public SellingCompany updateSellingCompany(@PathParam("sellingCompanyId") int id, SellingCompany sellingCompany) {
-        sellingCompany.setId(id);
-        sellingCompanyService.updateSellingCompany(sellingCompany);
+    @Path("/{name}")
+    public SellingCompany updateSellingCompany(@PathParam("name") String name, SellingCompany sellingCompany) {
+        sellingCompanyService.updateSellingCompany(name,sellingCompany);
         return sellingCompany;
     }
 
     @DELETE
-    @Path("/{sellingCompanyId}")
-    public void deleteSellingCompany(@PathParam("sellingCompanyId") int id) {
-        sellingCompanyService.deleteSellingCompany(sellingCompanyService.getSellingCompanyById(id));
+    @Path("/{name}")
+    public void deleteSellingCompany(@PathParam("name") String name) {
+        sellingCompanyService.deleteSellingCompany(sellingCompanyService.getSellingCompanyByName(name));
     }
 
     @POST
@@ -62,18 +66,6 @@ public class SellingCompanyResource {
     @Path("/{sellingCompanyId}/products")
     public List<Product> getProductsBySellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId) {
         return sellingCompanyService.getProductsBySellingCompany(sellingCompanyId);
-    }
-
-    @PUT
-    @Path("/login")
-    public boolean login (SellingCompany sellingCompany) {
-        return sellingCompanyService.login(sellingCompany.getName(), sellingCompany.getPassword());
-    }
-
-    @PUT
-    @Path("/logout")
-    public void logout (SellingCompany sellingCompany) {
-        sellingCompanyService.logout(sellingCompany.getName());
     }
 
     @DELETE

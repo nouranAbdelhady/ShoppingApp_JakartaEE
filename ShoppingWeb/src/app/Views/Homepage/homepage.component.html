@@ -23,6 +23,9 @@
     <h4>Customer!</h4>
     <app-customer-component></app-customer-component>
   </div>
+  <div *ngIf="this.loggedInUser.type === 'Selling_Company'">
+    <h4>Shopping Company!</h4>
+  </div>
 
 </div>
 

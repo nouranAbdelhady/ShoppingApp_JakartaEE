@@ -1,3 +1,20 @@
+CREATE database account;
+USE account;
+CREATE TABLE Account
+(
+    id         INT AUTO_INCREMENT NOT NULL,
+    username   VARCHAR(255)       NULL,
+    password   VARCHAR(255)       NULL,
+    type       VARCHAR(255)       NULL,
+    isLoggedIn BIT(1)             NOT NULL,
+    CONSTRAINT pk_account PRIMARY KEY (id)
+);
+
+ALTER TABLE Account
+    ADD CONSTRAINT uc_account_username UNIQUE (username);
+
+-----------------------------------------------------------------------------------------------------------------------------
+
 CREATE database userr;
 USE userr;
 CREATE TABLE GeographicalRegion
@@ -12,14 +29,13 @@ ALTER TABLE GeographicalRegion
     
 CREATE TABLE Userr
 (
-    id                     INT          NOT NULL auto_increment,
-    username               VARCHAR(255) NULL,
-    fullname               VARCHAR(255) NULL,
-    email                  VARCHAR(255) NULL,
-    password               VARCHAR(255) NULL,
-    is_logged_in           BIT(1)       NOT NULL,
-    type                   VARCHAR(255) NULL,
-    geographical_region_id INT          NULL,
+    id                     INT AUTO_INCREMENT NOT NULL,
+    username               VARCHAR(255)       NULL,
+    fullname               VARCHAR(255)       NULL,
+    email                  VARCHAR(255)       NULL,
+    password               VARCHAR(255)       NULL,
+    type                   VARCHAR(255)       NULL,
+    geographical_region_id INT                NULL,
     CONSTRAINT pk_userr PRIMARY KEY (id)
 );
 
@@ -28,7 +44,6 @@ ALTER TABLE Userr
 
 ALTER TABLE Userr
     ADD CONSTRAINT FK_USERR_ON_GEOGRAPHICAL_REGION FOREIGN KEY (geographical_region_id) REFERENCES GeographicalRegion (id);
-
 -----------------------------------------------------------------------------------------------------------------------------
 CREATE database product;
 USE product;

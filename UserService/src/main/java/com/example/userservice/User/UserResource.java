@@ -43,27 +43,20 @@ public class UserResource {
     }
 
     @PUT
-    @Path("/{UserId}")
-    public boolean updateUser(@PathParam("UserId") int id, Userr userr) {
-        userr.setId(id);
-        return userService.updateUser(userr);
+    @Path("/{Username}")
+    public boolean updateUser(@PathParam("Username") String name, Userr userr) {
+        return userService.updateUser(name, userr);
     }
 
     @DELETE
-    @Path("/{UserId}")
-    public boolean deleteUser(@PathParam("UserId") int id) {
-        return userService.deleteUser(userService.getUserById(id));
+    @Path("/{Username}")
+    public boolean deleteUser(@PathParam("Username") String username) {
+        return userService.deleteUser(userService.getUserByUsername(username));
     }
 
-    @PUT
-    @Path("/login")
-    public Userr login(Userr userr) {
-        return userService.login(userr);
-    }
-
-    @PUT
-    @Path("/logout")
-    public Userr logout(Userr userr) {
-        return userService.logout(userr.getUsername());
+    @GET
+    @Path("/username/{Username}")
+    public Userr getUserByUsername(@PathParam("Username") String username) {
+        return userService.getUserByUsername(username);
     }
 }

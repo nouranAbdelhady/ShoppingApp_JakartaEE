@@ -22,20 +22,16 @@ public class SellingCompany {
     private String name;
     private String password;        //auto generated
 
-    private Boolean is_logged_in;
-
     @OneToMany(mappedBy = "sellingCompany", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products;
 
     public SellingCompany() {
         products = new ArrayList<>();
         this.password = this.generateSecurePassword();
-        this.is_logged_in = false;
     }
     public SellingCompany(String companyName) {
         this.name = companyName;
         this.password = this.generateSecurePassword();
-        this.is_logged_in = false;
         products = new ArrayList<>();
     }
 
@@ -78,14 +74,6 @@ public class SellingCompany {
 
     public void setProducts(List<Product> products) {
         this.products = products;
-    }
-
-    public Boolean getIs_logged_in() {
-        return is_logged_in;
-    }
-
-    public void setIs_logged_in(Boolean is_logged_in) {
-        this.is_logged_in = is_logged_in;
     }
 
     // auto generate password

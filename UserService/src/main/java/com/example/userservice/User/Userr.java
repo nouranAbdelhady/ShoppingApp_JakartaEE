@@ -17,8 +17,6 @@ public class Userr implements Serializable {
     private String fullname;
     private String email;
     private String password;
-    private boolean is_logged_in;
-
     private String type; // customer or admin
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -33,7 +31,6 @@ public class Userr implements Serializable {
         this.fullname = fullname;
         this.email = email;
         this.password = password;
-        this.is_logged_in = false;
         //this.region = region;
     }
 
@@ -77,15 +74,6 @@ public class Userr implements Serializable {
         this.password = password;
     }
 
-    public boolean isIs_logged_in() {
-        return is_logged_in;
-    }
-
-    public void setIs_logged_in(boolean is_logged_in) {
-        this.is_logged_in = is_logged_in;
-    }
-
-
     public GeographicalRegion getGeographicalRegion() {
         return geographicalRegion;
     }
@@ -93,7 +81,6 @@ public class Userr implements Serializable {
     public void setGeographicalRegion(GeographicalRegion geographicalRegion) {
         this.geographicalRegion = geographicalRegion;
     }
-
 
     public String getType() {
         return type;
@@ -115,7 +102,6 @@ public class Userr implements Serializable {
                 ", fullname='" + fullname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", is_logged_in=" + is_logged_in +
                 ", type='" + type + '\'' +
                 //", geographicalRegion=" + geographicalRegion +
                 '}';

@@ -1,7 +1,7 @@
-package com.example.userservice.Session;
+package com.example.accountservice.Session;
 
-import com.example.userservice.User.UserService;
-import com.example.userservice.User.Userr;
+import com.example.accountservice.Account.Account;
+import com.example.accountservice.Account.AccountService;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,46 +13,45 @@ public class AuthResource {
 
     @EJB
     private UserSessionBean userSessionBean;
-
     @EJB
-    private UserService userService;
+    private AccountService accountService;
 
     @PUT
     @Path("/login")
-    public Userr login(Userr user) {
+    public Account login(Account user) {
         // Perform login authentication and authorization checks
-        Userr loggedInUser = userService.login(user);
+        Account loggedInUser = accountService.login(user);
         if(loggedInUser!=null){
             // If login is successful, set the logged-in user in the session bean
             System.out.println("User logged in: " + loggedInUser.getUsername());
             userSessionBean.login(loggedInUser);
-            System.out.println("Test " + userSessionBean.getLoggedInUser().getUsername());
+            System.out.println("Test " + userSessionBean.getLoggedInAccount().getUsername());
             return loggedInUser;
         }
         else{
-            // If login is unsuccessful, return an unauthorized response
+            // If login is unsuccessful
             return null;
         }
     }
 
     @PUT
     @Path("/logout")
-    public Userr logout() {
+    public Account logout() {
         // Get the logged-in user from the session bean and clear the session
-        Userr loggedInUser = userSessionBean.getLoggedInUser();
+        Account loggedInUser = userSessionBean.getLoggedInAccount();
         if (loggedInUser == null) {
             return null;
         }
         userSessionBean.logout();
-        userService.logout(loggedInUser.getUsername());
+        accountService.logout(loggedInUser);
         return loggedInUser;
     }
 
     @GET
     @Path("/user")
-    public Userr getLoggedInUser() {
+    public Account getLoggedInUser() {
         // Get the logged-in user from the session bean
-        Userr loggedInUser = userSessionBean.getLoggedInUser();
+        Account loggedInUser = userSessionBean.getLoggedInAccount();
         if (loggedInUser == null) {
             return null;
         }
