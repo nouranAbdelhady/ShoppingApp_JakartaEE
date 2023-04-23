@@ -4,8 +4,8 @@ import {HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {CustomerComponent} from './User/Customer/customer-component.component';
-import {AdminComponent} from "./User/Admin/admin-component.component";
+import {CustomerComponent} from './Accounts/User/Customer/customer-component.component';
+import {AdminComponent} from "./Accounts/User/Admin/admin-component.component";
 import {RegisterComponent} from "./Views/Register/register.component";
 import {LoginComponent} from "./Views/Login/login.component";
 import {FormsModule} from "@angular/forms";

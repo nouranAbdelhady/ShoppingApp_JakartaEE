@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin homepage</title>
+</head>
+<body>
+<div class="container">
+  <h1 class="header">Functions:</h1>
+  <div class="list">
+    <button class="list-item" (click)="createProductSellingCompanies()">Create Product Selling Company</button>
+    <button class="list-item" (click)="createShippingCompanies()">Create Shipping Company</button>
+    <button class="list-item" (click)="listCustomerAccounts()">List Customer Accounts</button>
+    <button class="list-item" (click)="listShippingCompanies()">List Shipping Companies Accounts</button>
+    <button class="list-item" (click)="listSellingCompaniesRepresentativeAccounts()">List Selling Companies Accounts</button>
+  </div>
+
+  <div *ngIf="createSellingFormShown" class="form">
+    <h2>New Selling Company:</h2>
+    <form (ngSubmit)="submitNewSelling()" #companyForm="ngForm">
+      <label>Company name:</label>
+      <input type="text" [(ngModel)]="this.newCompanyName"><br>
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+  <div *ngIf="createShippingFormShown" class="form">
+    <h2>New Shipping Company:</h2>
+    <form (ngSubmit)="submitNewShipping()" #companyForm="ngForm">
+      <label>Company name:</label>
+      <input type="text" [(ngModel)]="this.newCompanyName"><br>
+      <label>Company password:</label>
+      <input type="text" [(ngModel)]="this.newCompanyPassword"><br>
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+
+  <div *ngIf="accounts && accounts.length">
+    <h2>List of Accounts:</h2>
+    <ul>
+      <li *ngFor="let account of accounts">
+        {{ account.username }} - {{ account.password }}
+      </li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

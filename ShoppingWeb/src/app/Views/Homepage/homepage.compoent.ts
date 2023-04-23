@@ -1,12 +1,13 @@
 import {Component, Injectable, OnInit} from "@angular/core";
-import {User} from "../../User/user.model";
+import {User} from "../../Accounts/User/user.model";
 import {HttpClient} from "@angular/common/http";
-import {AuthService} from "../../User/auth.service";
+import {AuthService} from "../../Accounts/User/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-homepage-component',
   templateUrl: './homepage.component.html',
+  styleUrls: ['./homepage.component.css']
 })
 
 @Injectable({

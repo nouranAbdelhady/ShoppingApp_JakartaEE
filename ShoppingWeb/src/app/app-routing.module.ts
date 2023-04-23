@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CustomerComponent } from './User/Customer/customer-component.component';
+import { CustomerComponent } from './Accounts/User/Customer/customer-component.component';
 import { RegisterComponent } from "./Views/Register/register.component";
-import { AdminComponent } from "./User/Admin/admin-component.component";
+import { AdminComponent } from "./Accounts/User/Admin/admin-component.component";
 import { LoginComponent } from "./Views/Login/login.component";
 import { ConfirmComponent } from "./Views/Register/confirmation/confirm.component";
 import {HomepageComponent} from "./Views/Homepage/homepage.compoent";

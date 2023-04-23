@@ -11,9 +11,11 @@
   <br>
 </div>
 <div *ngIf="this.loggedIn">
-  <h1>Welcome</h1>
-  <h2>Logged in as {{this.loggedInUser.username}}</h2>
-  <a (click)="logoutUser()">Logout</a>
+  <nav>
+    <h1>Welcome</h1>
+    <h2>Logged in as {{this.loggedInUser.username}}</h2>
+    <a (click)="logoutUser()">Logout</a>
+  </nav>
 
   <div *ngIf="this.loggedInUser.type === 'Admin'">
     <h4>Admin!</h4>
@@ -26,7 +28,6 @@
   <div *ngIf="this.loggedInUser.type === 'Selling_Company'">
     <h4>Shopping Company!</h4>
   </div>
-
 </div>
 
 </body>
