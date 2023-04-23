@@ -2,7 +2,7 @@ package com.example.productservice.Product;
 
 import java.io.Serializable;
 
-import com.example.productservice.ShippingCompany.SellingCompany;
+import com.example.productservice.SellingCompany.SellingCompany;
 import jakarta.persistence.*;
 
 @Entity

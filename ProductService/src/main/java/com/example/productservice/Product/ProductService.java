@@ -1,6 +1,5 @@
 package com.example.productservice.Product;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
 

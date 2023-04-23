@@ -6,7 +6,7 @@
     <persistence-unit name="product" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.example.productservice.Product.Product</class>
-        <class>com.example.productservice.ShippingCompany.SellingCompany</class>
+        <class>com.example.productservice.SellingCompany.SellingCompany</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

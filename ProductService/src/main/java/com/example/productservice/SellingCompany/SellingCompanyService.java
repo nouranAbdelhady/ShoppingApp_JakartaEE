@@ -1,7 +1,6 @@
-package com.example.productservice.ShippingCompany;
+package com.example.productservice.SellingCompany;
 
 import com.example.productservice.Product.Product;
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;

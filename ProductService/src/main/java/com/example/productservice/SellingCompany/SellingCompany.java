@@ -1,4 +1,4 @@
-package com.example.productservice.ShippingCompany;
+package com.example.productservice.SellingCompany;
 
 import com.example.productservice.Product.Product;
 import jakarta.persistence.*;
