@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Selling Company homepage</title>
+</head>
+<body>
+<div class="container">
+  <h1 class="header">Functions:</h1>
+  <div class="list">
+    <button class="list-item" (click)="viewProductsOnSale()">View products on sale</button>
+    <button class="list-item" (click)="viewPreviouslySold()">View previously sold products</button>
+    <button class="list-item" (click)="addNewProduct()">Add new product</button>
+  </div>
+
+  <div *ngIf="products && products.length">
+    <h2>List of Products:</h2>
+    <ul>
+      <li *ngFor="let product of products">
+        {{ product.name }} - {{ product.description }} - {{ product.price }}
+      </li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

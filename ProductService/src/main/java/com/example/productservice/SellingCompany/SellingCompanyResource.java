@@ -28,6 +28,7 @@ public class SellingCompanyResource {
     public SellingCompany getSellingCompanyById(@PathParam("sellingCompanyId") int id) {
         return sellingCompanyService.getSellingCompanyById(id);
     }
+
     @GET
     @Path("/name/{name}")
     public SellingCompany getSellingCompanyByName(@PathParam("name") String name) {
@@ -43,7 +44,7 @@ public class SellingCompanyResource {
     @PUT
     @Path("/{name}")
     public SellingCompany updateSellingCompany(@PathParam("name") String name, SellingCompany sellingCompany) {
-        sellingCompanyService.updateSellingCompany(name,sellingCompany);
+        sellingCompanyService.updateSellingCompany(name, sellingCompany);
         return sellingCompany;
     }
 
@@ -63,14 +64,20 @@ public class SellingCompanyResource {
     }
 
     @GET
-    @Path("/{sellingCompanyId}/products")
-    public List<Product> getProductsBySellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId) {
-        return sellingCompanyService.getProductsBySellingCompany(sellingCompanyId);
+    @Path("/{sellingCompanyName}/products")
+    public List<Product> getProductsBySellingCompany(@PathParam("sellingCompanyName") String sellingCompanyName) {
+        return sellingCompanyService.getProductsBySellingCompany(sellingCompanyName);
     }
 
     @DELETE
     @Path("/{sellingCompanyId}/products/{productId}")
     public void deleteProductFromSellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId, @PathParam("productId") int productId) {
         sellingCompanyService.deleteProductFromSellingCompany(sellingCompanyId, productId);
+    }
+
+    @GET
+    @Path("/{sellingCompanyName}/products/state/{state}")
+    public List<Product> getProductsBySellingCompanyAndState(@PathParam("sellingCompanyName") String sellingCompanyName, @PathParam("state") String state) {
+        return sellingCompanyService.getProductsBySellingCompanyAndState(sellingCompanyName, state);
     }
 }

@@ -133,9 +133,9 @@ public class SellingCompanyService {
         entityManager.getTransaction().commit();
     }
 
-    public List<Product> getProductsBySellingCompany(int sellingCompanyId) {
-        return entityManager.createQuery("SELECT p FROM Product p WHERE p.sellingCompany.id = :sellingCompanyId", Product.class)
-                .setParameter("sellingCompanyId", sellingCompanyId)
+    public List<Product> getProductsBySellingCompany(String sellingCompanyName) {
+        return entityManager.createQuery("SELECT p FROM Product p WHERE p.sellingCompany.name = :sellingCompanyName", Product.class)
+                .setParameter("sellingCompanyName", sellingCompanyName)
                 .getResultList();
     }
 
@@ -155,6 +155,13 @@ public class SellingCompanyService {
             return true;
         }
         return false;
+    }
+
+    public List<Product> getProductsBySellingCompanyAndState(String sellingCompanyName, String state) {
+        return entityManager.createQuery("SELECT p FROM Product p WHERE p.sellingCompany.name = :sellingCompanyName AND p.state = :state", Product.class)
+                .setParameter("sellingCompanyName", sellingCompanyName)
+                .setParameter("state", state)
+                .getResultList();
     }
 
 }
