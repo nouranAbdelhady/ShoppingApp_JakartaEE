@@ -80,4 +80,29 @@ public class SellingCompanyResource {
     public List<Product> getProductsBySellingCompanyAndState(@PathParam("sellingCompanyName") String sellingCompanyName, @PathParam("state") String state) {
         return sellingCompanyService.getProductsBySellingCompanyAndState(sellingCompanyName, state);
     }
+
+    // RepresentiveName
+    @GET
+    @Path("representative_name")
+    public List<RepresentativeName> getAllRepresentativeNames() {
+        return sellingCompanyService.getAllRepresentativeNames();
+    }
+
+    @POST
+    @Path("representative_name")
+    public void addRepresentativeName(RepresentativeName representativeName) {
+        sellingCompanyService.addRepresentativeName(representativeName);
+    }
+
+    @GET
+    @Path("representative_name/assigned")
+    public List<RepresentativeName> getAllAssignedRepresentativeNames() {
+        return sellingCompanyService.getAssignedRepresentativeNames();
+    }
+
+    @GET
+    @Path("representative_name/unassigned")
+    public List<RepresentativeName> getAllUnassignedRepresentativeNames() {
+        return sellingCompanyService.getUnassignedRepresentativeNames();
+    }
 }

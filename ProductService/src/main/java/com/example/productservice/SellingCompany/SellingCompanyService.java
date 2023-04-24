@@ -164,4 +164,25 @@ public class SellingCompanyService {
                 .getResultList();
     }
 
+    // RepresentiveName
+    public List<RepresentativeName> getAllRepresentativeNames() {
+        return entityManager.createQuery("SELECT r FROM RepresentativeName r", RepresentativeName.class).getResultList();
+    }
+
+    public void addRepresentativeName(RepresentativeName representativeName) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(representativeName);
+        entityManager.getTransaction().commit();
+    }
+
+    // Get names of representatives that are not assigned to a selling company
+    public List<RepresentativeName> getUnassignedRepresentativeNames() {
+        return entityManager.createQuery("SELECT r FROM RepresentativeName r LEFT JOIN SellingCompany s ON r.name = s.name WHERE s.name IS NULL ", RepresentativeName.class).getResultList();
+    }
+
+    // Get names of representatives that are assigned to a selling company
+    public List<RepresentativeName> getAssignedRepresentativeNames() {
+        return entityManager.createQuery("SELECT r FROM RepresentativeName r LEFT JOIN SellingCompany s ON r.name = s.name WHERE s.name IS NOT NULL ", RepresentativeName.class).getResultList();
+    }
+
 }

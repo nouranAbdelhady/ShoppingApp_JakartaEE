@@ -14,7 +14,6 @@ ALTER TABLE Account
     ADD CONSTRAINT uc_account_username UNIQUE (username);
 
 -----------------------------------------------------------------------------------------------------------------------------
-
 CREATE database userr;
 USE userr;
 CREATE TABLE GeographicalRegion
@@ -57,6 +56,11 @@ CREATE TABLE selling_company
 );
 ALTER TABLE selling_company
     ADD CONSTRAINT uc_selling_company_name UNIQUE (name);
+CREATE TABLE RepresentativeName
+(
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_representativename PRIMARY KEY (name)
+);
 CREATE TABLE Product
 (
     id                 INT AUTO_INCREMENT NOT NULL,
