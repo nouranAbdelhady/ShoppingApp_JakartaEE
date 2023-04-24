@@ -18,10 +18,13 @@
     <h2>New Selling Company:</h2>
     <form (ngSubmit)="submitNewSelling()" #companyForm="ngForm">
       <label>Company name:</label>
-      <input type="text" [(ngModel)]="this.newCompanyName"><br>
+      <select [(ngModel)]="selectedCompanyName" name="companyName">
+        <option *ngFor="let companyName of unassignedCompanyNames" [value]="companyName">{{companyName}}</option>
+      </select><br>
       <button type="submit">Create</button>
     </form>
   </div>
+
 
   <div *ngIf="createShippingFormShown" class="form">
     <h2>New Shipping Company:</h2>
@@ -32,6 +35,12 @@
       <input type="text" [(ngModel)]="this.newCompanyPassword"><br>
       <button type="submit">Create</button>
     </form>
+  </div>
+
+  <div *ngIf="this.submitForm==true" class="form">
+    <h2>New Company Created!!</h2>
+    <p>Username: {{this.createdCompanyCredentials.username}}</p>
+    <p>Password: {{this.createdCompanyCredentials.password}}</p>
   </div>
 
 
