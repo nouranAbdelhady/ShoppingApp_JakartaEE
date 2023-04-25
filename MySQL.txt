@@ -80,14 +80,12 @@ ALTER TABLE Product
     ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);
     
 ------------------------------------------------------------------------------------------------
-
+create database `order`;
 CREATE TABLE `order`.`order` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(255) NOT NULL,
   `productId` INT NOT NULL,
   `amount` INT NOT NULL,
-  `order_date` DATE NOT NULL,
-  `quantity` INT NOT NULL,
   `shipping_address` VARCHAR(255) NOT NULL,
   `state` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`));
