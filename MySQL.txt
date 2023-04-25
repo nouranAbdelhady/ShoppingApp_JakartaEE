@@ -13,7 +13,8 @@ CREATE TABLE Account
 ALTER TABLE Account
     ADD CONSTRAINT uc_account_username UNIQUE (username);
 
------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
 CREATE database userr;
 USE userr;
 CREATE TABLE GeographicalRegion
@@ -43,7 +44,9 @@ ALTER TABLE Userr
 
 ALTER TABLE Userr
     ADD CONSTRAINT FK_USERR_ON_GEOGRAPHICAL_REGION FOREIGN KEY (geographical_region_id) REFERENCES GeographicalRegion (id);
------------------------------------------------------------------------------------------------------------------------------
+    
+------------------------------------------------------------------------------------------------
+
 CREATE database product;
 USE product;
 CREATE TABLE selling_company
@@ -75,3 +78,18 @@ CREATE TABLE Product
 
 ALTER TABLE Product
     ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);
+    
+------------------------------------------------------------------------------------------------
+
+CREATE TABLE `order`.`order` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `productId` INT NOT NULL,
+  `amount` INT NOT NULL,
+  `order_date` DATE NOT NULL,
+  `quantity` INT NOT NULL,
+  `shipping_address` VARCHAR(255) NOT NULL,
+  `state` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`));
+
+------------------------------------------------------------------------------------------------
