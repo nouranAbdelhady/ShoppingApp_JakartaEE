@@ -54,6 +54,7 @@ public class AccountService {
     }
 
     public Account getByUsername(String username) {
+        if (username == null) return null;
         TypedQuery<Account> query = entityManager.createQuery("SELECT a FROM Account a WHERE a.username =:username", Account.class);
         query.setParameter("username", username);
         Account account = query.getSingleResult();
@@ -79,6 +80,11 @@ public class AccountService {
         entityManager.getTransaction().begin();
         entityManager.merge(targetedAccount);
         entityManager.getTransaction().commit();
+        return targetedAccount;
+    }
+
+    public Account getCredentials(String username) {
+        Account targetedAccount = getByUsername(username);
         return targetedAccount;
     }
 

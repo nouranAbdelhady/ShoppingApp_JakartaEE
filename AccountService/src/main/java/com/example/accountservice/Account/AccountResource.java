@@ -60,5 +60,10 @@ public class AccountResource {
         return accountService.logout(account);
     }
 
+    @GET
+    @Path("credentials/{AccountName}")
+    public Account getCredentials(@PathParam("AccountName") String name) {
+        return accountService.getCredentials(name);
+    }
 
 }
