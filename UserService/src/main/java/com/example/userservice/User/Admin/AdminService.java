@@ -1,7 +1,7 @@
 package com.example.userservice.User.Admin;
 
 import com.google.gson.JsonArray;
-import jakarta.ejb.Stateless;
+import jakarta.ejb.Singleton;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
@@ -13,10 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-@Stateless
+@Singleton
 public class AdminService {
 
+    private String accountServiceUrl = "http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts";
     private String sellingCompanyServiceUrl = "http://localhost:8080/ProductService-1.0-SNAPSHOT/api/selling_company";
+    private String shippingCompanyServiceUrl = "http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/shipping_company";
+
+    private static AdminService instance = null;
+
+    public static AdminService getInstance() {
+        if (instance == null) {
+            instance = new AdminService();
+            System.out.println("Singleton: instance created");
+        }
+        System.out.println("Singleton: instance already created");
+        return instance;
+    }
 
     public boolean addSellingCompany(String name) {
         System.out.println("You entered: " + name);
@@ -44,6 +57,35 @@ public class AdminService {
             return false;
         }
     }
+
+    public boolean addShippingCompany(String name, String password) {
+        System.out.println("You entered: " + name + " " + password);
+        JsonObject newShippingCompany = Json.createObjectBuilder()
+                .add("name", name)
+                .add("password", password)
+                .build();
+        // Send request to account service
+        try {
+            URL url = new URL(shippingCompanyServiceUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+            // Write the Shipping Company object to the request body
+            String companyJson = newShippingCompany.toString();
+            conn.getOutputStream().write(companyJson.getBytes());
+            // Get the response code and response message
+            int responseCode = conn.getResponseCode();
+            String responseMessage = conn.getResponseMessage();
+            System.out.println("Response code: " + responseCode);
+            System.out.println("Response message: " + responseMessage);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public List<String> getUnassignedRepresentativeNames() {
         try {
@@ -88,9 +130,9 @@ public class AdminService {
         }
     }
 
-    public List<String> getSellingCompanyCredentials(String targetedName){
+    public List<String> getCredentials(String targetedName){
         try {
-            URL url = new URL(sellingCompanyServiceUrl + "/name/"+targetedName);
+            URL url = new URL(accountServiceUrl + "/credentials/"+targetedName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -116,7 +158,7 @@ public class AdminService {
             String username = null, password =null;
             for (String s : responseArray) {
                 System.out.println("ResponseArray: "+s);
-                if (s.contains("name")) {
+                if (s.contains("username")) {
                     // split at the "name:" to get the username
                     s = s.split(":")[1];
                     // remove "" from the username
@@ -130,7 +172,6 @@ public class AdminService {
                     // remove "" from the password
                     s = s.substring(1, s.length()-1);
                     password = s;
-                    break;      // to ignore updating name of product
                 }
             }
 
@@ -144,6 +185,8 @@ public class AdminService {
         }
 
     }
+
+
 
 
 
