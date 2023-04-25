@@ -89,5 +89,8 @@ CREATE TABLE `order`.`order` (
   `shipping_address` VARCHAR(255) NOT NULL,
   `state` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`));
+  
+  ALTER TABLE `order`.`order` 
+CHANGE COLUMN `amount` `amount` DOUBLE NOT NULL ;
 
 ------------------------------------------------------------------------------------------------
