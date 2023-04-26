@@ -139,8 +139,8 @@ public class SellingCompanyService {
                 .getResultList();
     }
 
-    public boolean deleteProductFromSellingCompany(int sellingCompanyId, int productId) {
-        SellingCompany sellingCompany = getSellingCompanyById(sellingCompanyId);
+    public boolean deleteProductFromSellingCompany(String sellingCompanyName, int productId) {
+        SellingCompany sellingCompany = getSellingCompanyByName(sellingCompanyName);
         Product product = entityManager.createQuery("SELECT p FROM Product p WHERE p.id = :productId", Product.class)
                 .setParameter("productId", productId)
                 .getSingleResult();

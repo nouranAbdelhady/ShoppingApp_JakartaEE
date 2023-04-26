@@ -55,12 +55,10 @@ public class SellingCompanyResource {
     }
 
     @POST
-    @Path("/{sellingCompanyId}/products")
-    public void addProductToSellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId, Product product) {
-        sellingCompanyService.addProductToSellingCompany(sellingCompanyService.getSellingCompanyById(sellingCompanyId), product);
-        // Add the product to database
-        product.setSellingCompany(sellingCompanyService.getSellingCompanyById(sellingCompanyId));
-        productService.addProduct(product);
+    @Path("/{sellingCompanyName}/products")
+    public void addProductToSellingCompany(@PathParam("sellingCompanyName") String sellingCompanyName, Product product) {
+        sellingCompanyService.addProductToSellingCompany(sellingCompanyService.getSellingCompanyByName(sellingCompanyName), product);
+
     }
 
     @GET
@@ -70,9 +68,9 @@ public class SellingCompanyResource {
     }
 
     @DELETE
-    @Path("/{sellingCompanyId}/products/{productId}")
-    public void deleteProductFromSellingCompany(@PathParam("sellingCompanyId") int sellingCompanyId, @PathParam("productId") int productId) {
-        sellingCompanyService.deleteProductFromSellingCompany(sellingCompanyId, productId);
+    @Path("/{sellingCompanyName}/products/{productId}")
+    public void deleteProductFromSellingCompany(@PathParam("sellingCompanyName") String sellingCompanyName, @PathParam("productId") int productId) {
+        sellingCompanyService.deleteProductFromSellingCompany(sellingCompanyName, productId);
     }
 
     @GET

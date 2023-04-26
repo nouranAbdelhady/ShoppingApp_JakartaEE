@@ -12,13 +12,37 @@
     <button class="list-item" (click)="addNewProduct()">Add new product</button>
   </div>
 
-  <div *ngIf="products && products.length">
-    <h2>List of Products:</h2>
-    <ul>
-      <li *ngFor="let product of products">
-        {{ product.name }} - {{ product.description }} - {{ product.price }}
-      </li>
-    </ul>
+  <div *ngIf="buttonClicked">
+    <div *ngIf="products && products.length">
+      <h2>List of Products:</h2>
+      <ul>
+        <li *ngFor="let product of products">
+          {{product.id}} - {{ product.name }} - {{ product.description }} - {{ product.price }}
+          <button (click)="deleteProduct(product.id)">x</button>
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="products.length==0">
+      <h2>No products</h2>
+    </div>
+
+  </div>
+
+
+  <div *ngIf="createNewProductForm" class="form">
+    <h2>New Product:</h2>
+    <form (ngSubmit)="submitNewProduct()" #companyForm="ngForm">
+      <label>Product name:</label>
+      <input type="text" [(ngModel)]="newProductName" name="ProductName">
+      <label>Description:</label>
+      <input type="text" [(ngModel)]="newProductDescription" name="ProductDescription">
+      <label>Price:</label>
+      <input type="number" [(ngModel)]="newProductPrice" name="ProductPrice">
+      <label>Quantity:</label>
+      <input type="number" [(ngModel)]="newProductQuantity" name="ProductQuantity">
+      <button type="submit">Create</button>
+    </form>
   </div>
 
 </div>
