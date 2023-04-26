@@ -23,6 +23,9 @@ public class GeographicalRegionService {
     }
 
     public GeographicalRegion getRegionByName(String name) {
+        if (name == null || name.isEmpty()) {
+            return null;
+        }
         TypedQuery<GeographicalRegion> query = entityManager.createQuery("SELECT r FROM GeographicalRegion r WHERE r.name = :name", GeographicalRegion.class);
         query.setParameter("name", name);
         return query.getSingleResult();

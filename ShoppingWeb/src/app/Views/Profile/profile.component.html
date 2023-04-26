@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+</head>
+
+<div *ngIf="!this.loggedIn">
+  <h2>Not logged in</h2>
+  <a routerLink="/">Go Back</a>
+  <br>
+</div>
+<div *ngIf="this.loggedIn">
+  <nav>
+    <a routerLink="/homepage">Home</a>
+    <h1>Profile</h1>
+  </nav>
+</div>
+
+<body>
+<div *ngIf="this.loggedIn">
+  <form (ngSubmit)="saveUser()" #userForm="ngForm">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" [(ngModel)]="loggedInUser.username" readonly>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="text" id="password" name="password" [(ngModel)]="loggedInUser.password">
+    </div>
+
+  <div *ngIf="this.loggedInUser.type === 'Admin' || this.loggedInUser.type === 'Customer'">
+    <div>
+      <label for="fullname">Full name:</label>
+      <input type="text" id="fullname" name="fullname" [(ngModel)]="loggedInUser.fullname">
+    </div>
+    <div>
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" [(ngModel)]="loggedInUser.email">
+    </div>
+    <div>
+      <label for="region">Region:</label>
+      <select id="region" name="region" [(ngModel)]="selectedRegion">
+        <option *ngIf="!loggedInUser.geographicalRegion" [value]="null" selected>None</option>
+        <option *ngFor="let region of availableRegions" [value]="region.name">{{ region.name }}</option>
+      </select>
+    </div>
+  </div>
+
+<button type="submit">Save</button>
+</form>
+</div>
+
+</body>
+</html>

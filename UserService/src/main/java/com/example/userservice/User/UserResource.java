@@ -1,5 +1,7 @@
 package com.example.userservice.User;
 
+import com.example.userservice.GeographicalRegion.GeographicalRegion;
+import com.example.userservice.GeographicalRegion.GeographicalRegionService;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -13,6 +15,9 @@ public class UserResource {
 
     @EJB
     private UserService userService;
+
+    @EJB
+    private GeographicalRegionService regionService;
 
     @GET
     public List<Userr> getAllUsers() {
@@ -46,6 +51,16 @@ public class UserResource {
     @PUT
     @Path("/{Username}")
     public boolean updateUser(@PathParam("Username") String name, Userr userr) {
+        GeographicalRegion region = userr.getGeographicalRegion();
+        if (region != null) {
+            String regionName = region.getName();
+            GeographicalRegion newRegion = regionService.getRegionByName(regionName);
+            if (newRegion != null) {
+                userr.setGeographicalRegion(region);
+            }
+        }else{
+            userr.setGeographicalRegion(null);
+        }
         return userService.updateUser(name, userr);
     }
 

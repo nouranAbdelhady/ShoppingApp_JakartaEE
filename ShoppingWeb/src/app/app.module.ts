@@ -14,6 +14,7 @@ import {HomepageComponent} from "./Views/Homepage/homepage.compoent";
 import {NoneComponent} from "./Views/None/none-component";
 import {SellingCompanyComponent} from "./Accounts/SellingCompany/selling-company-component.component";
 import {ShippingCompanyComponent} from "./Accounts/ShippingCompany/shipping-company-component.component";
+import {ProfileComponent} from "./Views/Profile/profile.compoent";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {ShippingCompanyComponent} from "./Accounts/ShippingCompany/shipping-comp
     ConfirmComponent,
     LoginComponent,
     HomepageComponent,
+    ProfileComponent,
     NoneComponent,
     SellingCompanyComponent,
     ShippingCompanyComponent

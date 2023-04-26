@@ -90,10 +90,6 @@ public class Userr implements Serializable {
         this.type = type;
     }
 
-    public Boolean isAdmin() {
-        return this.type.equals("Admin");
-    }
-
     @Override
     public String toString() {
         return "Userr{" +

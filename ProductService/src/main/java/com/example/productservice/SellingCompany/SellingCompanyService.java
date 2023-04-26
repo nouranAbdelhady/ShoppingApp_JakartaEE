@@ -68,9 +68,16 @@ public class SellingCompanyService {
         return entityManager.createQuery("SELECT s FROM SellingCompany s", SellingCompany.class).getResultList();
     }
 
-    public void updateSellingCompany(String targetedName,SellingCompany sellingCompany) {
+    public SellingCompany updateSellingCompany(String targetedName,SellingCompany sellingCompany) {
+        SellingCompany targetedSellingCompany = getSellingCompanyByName(targetedName);
+        if (targetedSellingCompany == null) return null;
+
+        // Update selling company using product service
+        targetedSellingCompany.setName(sellingCompany.getName());
+        targetedSellingCompany.setPassword(sellingCompany.getPassword());
+        targetedSellingCompany.setProducts(targetedSellingCompany.getProducts());       //keep products
         entityManager.getTransaction().begin();
-        entityManager.merge(sellingCompany);
+        entityManager.merge(targetedSellingCompany);
         entityManager.getTransaction().commit();
 
         // Update account using account service
@@ -98,8 +105,10 @@ public class SellingCompanyService {
             String responseMessage = conn.getResponseMessage();
             System.out.println("Response code: " + responseCode);
             System.out.println("Response message: " + responseMessage);
+            return targetedSellingCompany;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -128,15 +137,21 @@ public class SellingCompanyService {
 
     public void addProductToSellingCompany(SellingCompany sellingCompany, Product product) {
         sellingCompany.addProduct(product);
+        product.setSellingCompany(sellingCompany);
         entityManager.getTransaction().begin();
         entityManager.merge(sellingCompany);
         entityManager.getTransaction().commit();
     }
 
     public List<Product> getProductsBySellingCompany(String sellingCompanyName) {
+        /*
         return entityManager.createQuery("SELECT p FROM Product p WHERE p.sellingCompany.name = :sellingCompanyName", Product.class)
                 .setParameter("sellingCompanyName", sellingCompanyName)
                 .getResultList();
+    */
+
+        SellingCompany sellingCompany = getSellingCompanyByName(sellingCompanyName);
+        return sellingCompany.getProducts();
     }
 
     public boolean deleteProductFromSellingCompany(String sellingCompanyName, int productId) {

@@ -30,7 +30,10 @@ export class HomepageComponent implements OnInit{
     fullname: '',
     type: '',
     is_logged_in: false,
-    geographicalRegion: '',
+    geographicalRegion: {
+      name: '',
+      id: 0
+    },
   };
   loggedIn = false;
 
@@ -62,12 +65,20 @@ export class HomepageComponent implements OnInit{
             fullname: '',
             type: '',
             is_logged_in: false,
-            geographicalRegion: '',
+            geographicalRegion: {
+              name: '',
+              id: 0
+            }
           }
           this.router.navigate(['/']).then(r => console.log("Navigated to login"));
         }
       }
     })
+  }
+
+  goToProfilePage() {
+    // Navigate to the user's profile page
+    this.router.navigate(['/profile']);
   }
 
 }

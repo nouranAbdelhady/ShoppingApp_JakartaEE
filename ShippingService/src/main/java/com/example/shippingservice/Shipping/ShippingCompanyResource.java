@@ -49,6 +49,12 @@ public class ShippingCompanyResource {
         return shippingCompanyService.removeRegionFromShippingCompany(name, region);
     }
 
+    @PUT
+    @Path("{name}")
+    public ShippingCompany updateShippingCompany(@PathParam("name") String name, ShippingCompany shippingCompany) {
+        return shippingCompanyService.updateShippingCompany(name, shippingCompany);
+    }
+
     @DELETE
     @Path("{name}")
     public boolean deleteShippingCompany(@PathParam("name") String name) {

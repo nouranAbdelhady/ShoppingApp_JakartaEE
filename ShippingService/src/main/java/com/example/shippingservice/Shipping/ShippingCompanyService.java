@@ -157,6 +157,49 @@ public class ShippingCompanyService {
         return false;
     }
 
+    public ShippingCompany updateShippingCompany(String companyName, ShippingCompany shippingCompany) {
+        ShippingCompany shippingCompany1 = getShippingCompanyByName(companyName);
+        if (shippingCompany1 != null) {
+            entityManager.getTransaction().begin();
+            shippingCompany1.setName(shippingCompany.getName());
+            shippingCompany1.setPassword(shippingCompany.getPassword());
+            entityManager.getTransaction().commit();
+
+
+            // Update in Account service
+            JsonObject account = Json.createObjectBuilder()
+                    .add("username", shippingCompany1.getName())
+                    .add("password", shippingCompany1.getPassword())
+                    .add("type", "Shipping_Company")
+                    .build();
+            System.out.println(account);
+
+            // Send request to account service
+            try {
+                URL url = new URL(accountServiceUrl+"/"+companyName);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                // Write the account object to the request body
+                String accountJson = account.toString();
+                conn.getOutputStream().write(accountJson.getBytes());
+
+                // Get the response code and response message
+                int responseCode = conn.getResponseCode();
+                String responseMessage = conn.getResponseMessage();
+                System.out.println("Response code: " + responseCode);
+                System.out.println("Response message: " + responseMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return shippingCompany1;
+        }
+        return null;
+    }
+
     public boolean removeRegionFromShippingCompany(String companyName , String regionName){
         TypedQuery<ShippingCompanyxRegion> query = entityManager.createQuery("SELECT s FROM ShippingCompanyxRegion s WHERE s.shippingCompanyName = :shippingCompanyName AND s.region = :region", ShippingCompanyxRegion.class);
         query.setParameter("shippingCompanyName", companyName);
