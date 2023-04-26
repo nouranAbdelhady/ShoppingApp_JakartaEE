@@ -213,4 +213,11 @@ public class ShippingCompanyService {
         }
         return false;
     }
+
+    public List<ShippingCompany> getCompaniesByRegion(String region) {
+        TypedQuery<ShippingCompany> query = entityManager.createQuery("SELECT s FROM ShippingCompany s " +
+                "LEFT JOIN ShippingCompanyxRegion sr ON sr.shippingCompanyName=s.name WHERE sr.region = :region", ShippingCompany.class);
+        query.setParameter("region", region);
+        return query.getResultList();
+    }
 }

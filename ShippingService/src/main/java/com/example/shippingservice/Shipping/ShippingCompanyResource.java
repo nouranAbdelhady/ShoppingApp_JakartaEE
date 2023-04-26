@@ -61,5 +61,11 @@ public class ShippingCompanyResource {
         return shippingCompanyService.deleteShippingCompany(name);
     }
 
+    @GET
+    @Path("/regions/{region}")
+    public List<ShippingCompany> getShippingCompanyByRegion(@PathParam("region") String region) {
+        return shippingCompanyService.getCompaniesByRegion(region);
+    }
+
 
 }
