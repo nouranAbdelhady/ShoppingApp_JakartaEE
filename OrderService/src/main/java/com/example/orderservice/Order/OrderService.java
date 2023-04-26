@@ -38,5 +38,33 @@ public class OrderService {
         entityManager.getTransaction().commit();
     }
 
+    public boolean deleteOrder(int Id) {
+        Order targetedOrder = getOrderByID(Id);
+        entityManager.getTransaction().begin();
+        entityManager.remove(targetedOrder);
+        entityManager.getTransaction().commit();
+        return true;
+    }
+
+    public void updateOrder(Order order) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(order);
+        entityManager.getTransaction().commit();
+    }
+
+    public List<Order> getOrderByState(String state) {
+        TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.state = :state", Order.class);
+        query.setParameter("state", state);
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
+
+    public List<Order> getOrderByNameAndState(String username, String state) {
+        TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.state = :state and o.username=:username", Order.class);
+        query.setParameter("state", state);
+        query.setParameter("username", username);
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
 }
 

@@ -12,17 +12,15 @@ public class Order implements Serializable {
     private String username;
     private int productId;
     private double amount;
-    private String shipping_address;
     private String state;
 
     public Order() {}
 
-    public Order(String username, int productID, double amount, String shipping_address,String state)
+    public Order(String username, int productID, double amount, String state)
     {
         this.username=username;
         this.productId=productID;
         this.amount=amount;
-        this.shipping_address=shipping_address;
         this.state=state;
     }
 
@@ -52,15 +50,6 @@ public class Order implements Serializable {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-
-    public String getShipping_address() {
-        return shipping_address;
-    }
-
-    public void setShipping_address(String shipping_address) {
-        this.shipping_address = shipping_address;
     }
 
     public void setProductId(int productId) {

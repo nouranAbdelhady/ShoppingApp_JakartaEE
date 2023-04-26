@@ -23,7 +23,7 @@ public class UserService {
 
     private String accountServiceUrl = "http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts";
 
-    private String orderServiceUrl = "http://localhost:8080/OrderService-1.0-SNAPSHOT/api";
+    private String orderServiceUrl = "http://localhost:8080/OrderService-1.0-SNAPSHOT/api/orders";
 
     @PostConstruct
     public void testInit() {
@@ -167,7 +167,7 @@ public class UserService {
 
     public List<List<String>> getOrdersbyName(String target) {
         try {
-            URL url = new URL(orderServiceUrl + "/orders/" + target);
+            URL url = new URL(orderServiceUrl + "/getByName/" + target);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             System.out.println("Connecting to URL: " + url); // Add this line
             conn.setRequestMethod("GET");
@@ -197,7 +197,6 @@ public class UserService {
                 String username = jsonObject.getString("username");
                 String productId = String.valueOf(jsonObject.getInt("productId"));
                 String amount = String.valueOf(jsonObject.getDouble("amount"));
-                String shipping_address = jsonObject.getString("shipping_address");
                 String state = jsonObject.getString("state");
 
                 // remove the extra " character from the end of the state field
@@ -209,7 +208,6 @@ public class UserService {
                 order.add(username);
                 order.add(productId);
                 order.add(amount);
-                order.add(shipping_address);
                 order.add(state);
                 orders.add(order);
             }
@@ -225,7 +223,7 @@ public class UserService {
 
     public List<List<String>> getPurchasedOrders(String name) {
         try {
-            URL url = new URL(orderServiceUrl + "/orders/" + name);
+            URL url = new URL(orderServiceUrl + "/getByName/" + name);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             System.out.println("Connecting to URL: " + url); // Add this line
             conn.setRequestMethod("GET");
@@ -255,7 +253,6 @@ public class UserService {
                 String username = jsonObject.getString("username");
                 String productId = String.valueOf(jsonObject.getInt("productId"));
                 String amount = String.valueOf(jsonObject.getDouble("amount"));
-                String shipping_address = jsonObject.getString("shipping_address");
                 String state = jsonObject.getString("state");
 
                 // remove the extra " character from the end of the state field
@@ -268,7 +265,6 @@ public class UserService {
                     order.add(username);
                     order.add(productId);
                     order.add(amount);
-                    order.add(shipping_address);
                     order.add(state);
                     orders.add(order);
                 }
@@ -285,7 +281,7 @@ public class UserService {
 
     public List<List<String>> getCurrentOrders(String name) {
         try {
-            URL url = new URL(orderServiceUrl + "/orders/" + name);
+            URL url = new URL(orderServiceUrl + "/getByName/" + name);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             System.out.println("Connecting to URL: " + url); // Add this line
             conn.setRequestMethod("GET");
@@ -315,7 +311,6 @@ public class UserService {
                 String username = jsonObject.getString("username");
                 String productId = String.valueOf(jsonObject.getInt("productId"));
                 String amount = String.valueOf(jsonObject.getDouble("amount"));
-                String shipping_address = jsonObject.getString("shipping_address");
                 String state = jsonObject.getString("state");
 
                 // remove the extra " character from the end of the state field
@@ -328,7 +323,6 @@ public class UserService {
                     order.add(username);
                     order.add(productId);
                     order.add(amount);
-                    order.add(shipping_address);
                     order.add(state);
                     orders.add(order);
                 }
@@ -342,6 +336,65 @@ public class UserService {
             return null;
         }
     }
+
+    public List<List<String>> getCurrentAndPurchasedOrders(String name, String order_state) {
+        try {
+            URL url = new URL(orderServiceUrl + "/nameAndState/" + name + "/" + order_state);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url); // Add this line
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+
+            conn.disconnect();
+
+            String response = responseBuilder.toString();
+            JSONArray jsonArray = new JSONArray(response);
+
+            List<List<String>> orders = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String username = jsonObject.getString("username");
+                String productId = String.valueOf(jsonObject.getInt("productId"));
+                String amount = String.valueOf(jsonObject.getDouble("amount"));
+                String state = jsonObject.getString("state");
+
+                // remove the extra " character from the end of the state field
+                if (state.endsWith("\"")) {
+                    state = state.substring(0, state.length() - 1);
+                }
+
+                if (state.equals(order_state)) {
+                    List<String> order = new ArrayList<>();
+                    order.add(username);
+                    order.add(productId);
+                    order.add(amount);
+                    order.add(state);
+                    orders.add(order);
+                }
+            }
+
+            System.out.println("Orders: " + orders);
+            return orders;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }
 

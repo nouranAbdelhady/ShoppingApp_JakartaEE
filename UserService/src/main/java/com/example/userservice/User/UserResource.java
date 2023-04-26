@@ -79,4 +79,10 @@ public class UserResource {
         return userService.getPurchasedOrders(name);
     }
 
+    @GET
+    @Path("/getCurrentAndPurchasedOrders/{name}/{state}")
+    public List<List<String>> getCurrentAndPurchasedOrders(@PathParam("name") String name, @PathParam("state") String state){
+        return userService.getCurrentAndPurchasedOrders(name, state);
+    }
+
 }
