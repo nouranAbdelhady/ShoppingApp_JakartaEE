@@ -27,7 +27,11 @@
   </div>
   <div *ngIf="this.loggedInUser.type === 'Selling_Company'">
     <h4>Shopping Company!</h4>
-    <app-sellingcompany-component></app-sellingcompany-component>
+    <app-selling-company-component></app-selling-company-component>
+  </div>
+  <div *ngIf="this.loggedInUser.type === 'Shipping_Company'">
+    <h4>Shopping Company!</h4>
+    <app-shipping-company-component></app-shipping-company-component>
   </div>
 </div>
 

@@ -28,18 +28,27 @@ export class AdminComponent {
   selectedCompanyName = '';
 
   // Shipping company form
-  newCompanyName = '';
-  newCompanyPassword = '';
+  ShippingCompany ={
+    newCompanyName: '',
+    newCompanyPassword: ''
+  }
+
+  // only 1 form can be shown at a time
+  shown = false;
 
   createProductSellingCompanies(): void {
     this.getUnassinedSellingCompanyNames();
-    this.createSellingFormShown = true;
+    this.createSellingFormShown = !this.createSellingFormShown;
+    this.createShippingFormShown = false;
     this.submitForm = false;
+    this.shown = false;
   }
 
   createShippingCompanies(): void {
-    this.createShippingFormShown = true;
+    this.createShippingFormShown = !this.createShippingFormShown;
+    this.createSellingFormShown = false;
     this.submitForm = false;
+    this.shown = false;
   }
 
   // Function to handle form submit
@@ -49,7 +58,6 @@ export class AdminComponent {
   };
   submitNewSelling() {
     console.log("New selling company: " + this.selectedCompanyName);
-    newCompanyName: this.selectedCompanyName;
 
     this.http.post(`${adminUrl}/add_selling_company`, this.selectedCompanyName).subscribe({
       next: (data: any) => {
@@ -72,14 +80,32 @@ export class AdminComponent {
     // Use the value of this.newCompanyName to create a new company
     // Reset form and hide it after submitting
     const data = {
-      username: this.newCompanyName,
-      password: this.newCompanyPassword,
+      name: this.ShippingCompany.newCompanyName,
+      password: this.ShippingCompany.newCompanyPassword,
     };
-    console.log("New shipping company: " + this.newCompanyName);
+    console.log("New shipping company: " + data.name + " " + data.password);
 
-    this.newCompanyName = '';
-    this.newCompanyPassword = '';
+    const sendData = data.name + "," + data.password;
+    const companyName = data.name;
+
+    this.http.post(`${adminUrl}/add_shipping_company`, sendData).subscribe({
+      next: (data: any) => {
+        this.createShippingFormShown = false;
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Request completed successfully');
+        this.submitForm=true;
+        this.loadCredentials(companyName);
+      }
+    });
+
+    this.ShippingCompany.newCompanyName = '';
+    this.ShippingCompany.newCompanyPassword = '';
     this.createShippingFormShown = false;
+
   }
 
   listCustomerAccounts(): void {
@@ -95,7 +121,9 @@ export class AdminComponent {
         console.log('Request completed successfully');
       }
     });
-    this.submitForm = false;
+    this.shown = !this.shown;
+    this.createShippingFormShown = false;
+    this.createSellingFormShown = false;
   }
 
   listShippingCompanies(): void {
@@ -111,7 +139,9 @@ export class AdminComponent {
         console.log('Request completed successfully');
       }
     });
-    this.submitForm = false;
+    this.shown = !this.shown;
+    this.createShippingFormShown = false;
+    this.createSellingFormShown = false;
   }
 
   listSellingCompaniesRepresentativeAccounts(): void {
@@ -127,7 +157,9 @@ export class AdminComponent {
         console.log('Request completed successfully');
       }
     });
-    this.submitForm = false;
+    this.shown = !this.shown;
+    this.createShippingFormShown = false;
+    this.createSellingFormShown = false;
   }
 
   getUnassinedSellingCompanyNames() {
@@ -147,7 +179,7 @@ export class AdminComponent {
 
   loadCredentials(companyName: String) {
     console.log("Load credentials for: " + companyName);
-    this.http.get<String[]>(`${adminUrl}/get_selling_company_credentials/${companyName}`).subscribe({
+    this.http.get<String[]>(`${adminUrl}/get_credentials/${companyName}`).subscribe({
       next: (data: String[]) => {
         console.log("Credentials: "+data);
         console.log("Username: "+data[0]);

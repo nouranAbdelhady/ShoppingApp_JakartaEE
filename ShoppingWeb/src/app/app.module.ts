@@ -12,7 +12,8 @@ import {FormsModule} from "@angular/forms";
 import {ConfirmComponent} from "./Views/Register/confirmation/confirm.component";
 import {HomepageComponent} from "./Views/Homepage/homepage.compoent";
 import {NoneComponent} from "./Views/None/none-component";
-import {SellingCompanyComponent} from "./Accounts/SellingCompany/sellingcompany-component.component";
+import {SellingCompanyComponent} from "./Accounts/SellingCompany/selling-company-component.component";
+import {ShippingCompanyComponent} from "./Accounts/ShippingCompany/shipping-company-component.component";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {SellingCompanyComponent} from "./Accounts/SellingCompany/sellingcompany-
     LoginComponent,
     HomepageComponent,
     NoneComponent,
-    SellingCompanyComponent
+    SellingCompanyComponent,
+    ShippingCompanyComponent
   ],
   imports: [
     BrowserModule,

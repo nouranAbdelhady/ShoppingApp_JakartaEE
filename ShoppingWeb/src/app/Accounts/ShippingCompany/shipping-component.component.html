@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shipping Company homepage</title>
+</head>
+<body>
+<div class="container">
+  <h1 class="header">Functions:</h1>
+  <div class="list">
+    <button class="list-item" (click)="addRegion()">Add new region</button>
+    <button class="list-item" (click)="viewRegions()">View regions</button>
+    <button class="list-item" (click)="viewShippingRequests()">View shipping requests</button>
+    <button class="list-item" (click)="viewAcceptedRequests()">View accepted requests</button>
+  </div>
+
+
+  <div *ngIf="showForm">
+    <div *ngIf="regions && regions.length">
+      <h2>List of Regions:</h2>
+      <ul>
+        <li *ngFor="let region of regions">
+          {{ region }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div *ngIf="createRegionFormShown" class="form">
+    <h2>New Region:</h2>
+    <form (ngSubmit)="submitRegionForm()" #companyForm="ngForm">
+      <label>Region name:</label>
+      <input type="text" [(ngModel)]="newRegionName" name="RegionName"><br>
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+</div>
+</body>
+</html>

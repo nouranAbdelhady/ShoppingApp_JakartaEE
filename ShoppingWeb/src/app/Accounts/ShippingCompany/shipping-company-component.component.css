@@ -1,0 +1,65 @@
+/* Center the webpage */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Add animation */
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #ddd;
+  color: #333;
+}
+
+/* Add layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.list-item {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+h2 {
+  background-color: #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+li:last-child {
+  border-bottom: none;
+}

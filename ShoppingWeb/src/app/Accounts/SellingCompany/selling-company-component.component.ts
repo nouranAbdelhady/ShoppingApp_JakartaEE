@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {HomepageComponent} from "../../Views/Homepage/homepage.compoent";
-import {SellingCompany} from "./sellingcompany.model";
 
 const baseUrl = 'http://localhost:8080/ProductService-1.0-SNAPSHOT/api/selling_company';
 @Component({
-  selector: 'app-sellingcompany-component',
+  selector: 'app-selling-company-component',
   templateUrl: './selling-component.component.html',
-  styleUrls: ['./sellingcompany-component.component.css']
+  styleUrls: ['./selling-company-component.component.css']
 })
 export class SellingCompanyComponent implements OnInit{
   products: any[] = [];

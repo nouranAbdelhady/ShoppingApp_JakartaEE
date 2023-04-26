@@ -92,5 +92,24 @@ CREATE TABLE `order`.`order` (
   
   ALTER TABLE `order`.`order` 
 CHANGE COLUMN `amount` `amount` DOUBLE NOT NULL ;
-
 ------------------------------------------------------------------------------------------------
+CREATE database shipping;
+USE shipping;
+CREATE TABLE shipping_company
+(
+    id       INT AUTO_INCREMENT NOT NULL,
+    name     VARCHAR(255)       NULL,
+    password VARCHAR(255)       NULL,
+    CONSTRAINT pk_shipping_company PRIMARY KEY (id)
+);
+
+ALTER TABLE shipping_company
+    ADD CONSTRAINT uc_shipping_company_name UNIQUE (name);
+
+CREATE TABLE company_regions
+(
+    id                  INT AUTO_INCREMENT NOT NULL,
+    shippingCompanyName VARCHAR(255)       NULL,
+    region              VARCHAR(255)       NULL,
+    CONSTRAINT pk_company_regions PRIMARY KEY (id)
+);

@@ -32,6 +32,7 @@ export class LoginComponent {
         if (res != null) {
           this.loggedIn = true;
           console.log("logged in: true");
+          console.log("Username: " + res.username);
           this.router.navigate(['/homepage']).then(r => console.log("Navigated to homepage"));
         }
       }

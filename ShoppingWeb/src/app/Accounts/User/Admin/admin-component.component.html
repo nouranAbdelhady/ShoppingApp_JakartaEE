@@ -30,9 +30,9 @@
     <h2>New Shipping Company:</h2>
     <form (ngSubmit)="submitNewShipping()" #companyForm="ngForm">
       <label>Company name:</label>
-      <input type="text" [(ngModel)]="this.newCompanyName"><br>
+      <input type="text" [(ngModel)]="ShippingCompany.newCompanyName" name="ShippingCompanyName"><br>
       <label>Company password:</label>
-      <input type="text" [(ngModel)]="this.newCompanyPassword"><br>
+      <input type="text" [(ngModel)]="ShippingCompany.newCompanyPassword" name="ShippingCompanyPassword"><br>
       <button type="submit">Create</button>
     </form>
   </div>
@@ -44,14 +44,17 @@
   </div>
 
 
-  <div *ngIf="accounts && accounts.length">
-    <h2>List of Accounts:</h2>
-    <ul>
-      <li *ngFor="let account of accounts">
-        {{ account.username }} - {{ account.password }}
-      </li>
-    </ul>
+  <div *ngIf="this.shown" class="form">
+    <div *ngIf="accounts && accounts.length">
+      <h2>List of Accounts:</h2>
+      <ul>
+        <li *ngFor="let account of accounts">
+          {{account.type}} - {{ account.username }} - {{ account.password }}
+        </li>
+      </ul>
+    </div>
   </div>
+
 </div>
 </body>
 </html>
