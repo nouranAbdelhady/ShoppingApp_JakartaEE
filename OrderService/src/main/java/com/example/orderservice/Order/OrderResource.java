@@ -20,6 +20,10 @@ public class OrderResource {
     @Path("/{OrderId}")
     public Order getOrderById(@PathParam("OrderId") int id) {return orderService.getOrderByID(id);}
 
+    @GET
+    @Path("/{Username}")
+    public List<Order> getOrderByUsername(@PathParam("Username") String username) {return orderService.getOrderByUsername(username);}
+
     @POST
     public Order createOrder(Order order)
     {

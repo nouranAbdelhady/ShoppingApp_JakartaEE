@@ -1,18 +1,18 @@
 package com.example.userservice.User;
 
-import com.example.userservice.GeographicalRegion.GeographicalRegion;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.Resource;
 import jakarta.ejb.Stateless;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
-import jakarta.transaction.NotSupportedException;
-import jakarta.transaction.SystemException;
-import jakarta.transaction.UserTransaction;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -21,7 +21,9 @@ public class UserService {
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    private String accountServiceUrl= "http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts";
+    private String accountServiceUrl = "http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts";
+
+    private String orderServiceUrl = "http://localhost:8080/OrderService-1.0-SNAPSHOT/api";
 
     @PostConstruct
     public void testInit() {
@@ -107,7 +109,7 @@ public class UserService {
                 .build();
         // Send request to account service
         try {
-            URL url = new URL(accountServiceUrl+"/"+name);
+            URL url = new URL(accountServiceUrl + "/" + name);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -138,7 +140,7 @@ public class UserService {
         if (entityManager.find(Userr.class, userr.getId()) == null) {
             // Remove from account service
             try {
-                URL url = new URL(accountServiceUrl+"/delete/"+userr.getUsername());
+                URL url = new URL(accountServiceUrl + "/delete/" + userr.getUsername());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
                 conn.setRequestProperty("Content-Type", "application/json");
@@ -163,5 +165,183 @@ public class UserService {
         return query.getSingleResult();
     }
 
+    public List<List<String>> getOrdersbyName(String target) {
+        try {
+            URL url = new URL(orderServiceUrl + "/orders/" + target);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url); // Add this line
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+
+            conn.disconnect();
+
+            String response = responseBuilder.toString();
+            JSONArray jsonArray = new JSONArray(response);
+
+            List<List<String>> orders = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String username = jsonObject.getString("username");
+                String productId = String.valueOf(jsonObject.getInt("productId"));
+                String amount = String.valueOf(jsonObject.getDouble("amount"));
+                String shipping_address = jsonObject.getString("shipping_address");
+                String state = jsonObject.getString("state");
+
+                // remove the extra " character from the end of the state field
+                if (state.endsWith("\"")) {
+                    state = state.substring(0, state.length() - 1);
+                }
+
+                List<String> order = new ArrayList<>();
+                order.add(username);
+                order.add(productId);
+                order.add(amount);
+                order.add(shipping_address);
+                order.add(state);
+                orders.add(order);
+            }
+
+            System.out.println("Orders: " + orders);
+            return orders;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<List<String>> getPurchasedOrders(String name) {
+        try {
+            URL url = new URL(orderServiceUrl + "/orders/" + name);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url); // Add this line
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+
+            conn.disconnect();
+
+            String response = responseBuilder.toString();
+            JSONArray jsonArray = new JSONArray(response);
+
+            List<List<String>> orders = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String username = jsonObject.getString("username");
+                String productId = String.valueOf(jsonObject.getInt("productId"));
+                String amount = String.valueOf(jsonObject.getDouble("amount"));
+                String shipping_address = jsonObject.getString("shipping_address");
+                String state = jsonObject.getString("state");
+
+                // remove the extra " character from the end of the state field
+                if (state.endsWith("\"")) {
+                    state = state.substring(0, state.length() - 1);
+                }
+
+                if (state.equals("purchased")) {
+                    List<String> order = new ArrayList<>();
+                    order.add(username);
+                    order.add(productId);
+                    order.add(amount);
+                    order.add(shipping_address);
+                    order.add(state);
+                    orders.add(order);
+                }
+            }
+
+            System.out.println("Orders: " + orders);
+            return orders;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<List<String>> getCurrentOrders(String name) {
+        try {
+            URL url = new URL(orderServiceUrl + "/orders/" + name);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url); // Add this line
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+
+            conn.disconnect();
+
+            String response = responseBuilder.toString();
+            JSONArray jsonArray = new JSONArray(response);
+
+            List<List<String>> orders = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String username = jsonObject.getString("username");
+                String productId = String.valueOf(jsonObject.getInt("productId"));
+                String amount = String.valueOf(jsonObject.getDouble("amount"));
+                String shipping_address = jsonObject.getString("shipping_address");
+                String state = jsonObject.getString("state");
+
+                // remove the extra " character from the end of the state field
+                if (state.endsWith("\"")) {
+                    state = state.substring(0, state.length() - 1);
+                }
+
+                if (state.equals("created")) {
+                    List<String> order = new ArrayList<>();
+                    order.add(username);
+                    order.add(productId);
+                    order.add(amount);
+                    order.add(shipping_address);
+                    order.add(state);
+                    orders.add(order);
+                }
+            }
+
+            System.out.println("Orders: " + orders);
+            return orders;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
+

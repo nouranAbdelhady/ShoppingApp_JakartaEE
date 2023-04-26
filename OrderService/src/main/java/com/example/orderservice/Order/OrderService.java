@@ -25,6 +25,13 @@ public class OrderService {
         return entityManager.find(Order.class, id);
     }
 
+    public List<Order> getOrderByUsername(String username) {
+        TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.username = :username", Order.class);
+        query.setParameter("username", username);
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
+
     public void createOrder(Order order) {
         entityManager.getTransaction().begin();
         entityManager.persist(order);
