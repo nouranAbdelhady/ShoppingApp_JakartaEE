@@ -80,6 +80,7 @@ ALTER TABLE Product
     ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);
     
 ------------------------------------------------------------------------------------------------
+
 create database `order`;
 CREATE TABLE `order`.`order` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -92,7 +93,12 @@ CREATE TABLE `order`.`order` (
   
   ALTER TABLE `order`.`order` 
 CHANGE COLUMN `amount` `amount` DOUBLE NOT NULL ;
+
+ ALTER TABLE `order`.`order` 
+DROP COLUMN `shipping_address`;
+
 ------------------------------------------------------------------------------------------------
+
 CREATE database shipping;
 USE shipping;
 CREATE TABLE shipping_company
