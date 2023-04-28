@@ -1,22 +1,82 @@
-<p>Customer Component!</p>
-<table>
+<div class="options-container">
+  <button class="option-button" (click)="viewProducts()">View Products</button>
+  <button class="option-button" (click)="viewCurrentOrders()">View Current Orders</button>
+  <button class="option-button" (click)="viewPurchasedOrders()">View Purchased Orders</button>
+  <button class="option-button" (click)="viewCart()">View Cart</button> <!-- new button -->
+</div>
+
+
+<div *ngIf="showProducts">
+  <h2>Products</h2>
+  <ul>
+    <li *ngFor="let product of products">
+      {{ product.id }} - {{ product.name }} - {{ product.description }} - {{ product.price }}- {{ product.quantity }}- {{ product.state }}
+      <button (click)="addToCart(product)">Add to Cart</button>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="viewCurrent">
+  <h2>Current Orders</h2>
+  <table>
     <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Type</th>
-      </tr>
+    <tr>
+      <th>Username</th>
+      <th>Product ID</th>
+      <th>Amount</th>
+      <th>State</th>
+    </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let user of customers">
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.password }}</td>
-        <td>{{ user.type }}</td>
-        <td>{{ user.geographicalRegion?.name }}</td>
-      </tr>
+    <tbody *ngIf="orders && orders.length">
+    <tr *ngFor="let order of orders">
+      <td>{{ order[0] }}</td>
+      <td>{{ order[1] }}</td>
+      <td>{{ order[2] }}</td>
+      <td>{{ order[3] }}</td>
+    </tr>
     </tbody>
   </table>
+  <div *ngIf="orders && !orders.length">
+    <p>No orders found.</p>
+  </div>
+</div>
+
+
+<div *ngIf="viewPurchased">
+  <h2>Purchased Orders</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Product ID</th>
+      <th>Amount</th>
+      <th>State</th>
+    </tr>
+    </thead>
+    <tbody *ngIf="orders && orders.length">
+    <tr *ngFor="let order of orders">
+      <td>{{ order[0] }}</td>
+      <td>{{ order[1] }}</td>
+      <td>{{ order[2] }}</td>
+      <td>{{ order[3] }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <div *ngIf="orders && !orders.length">
+    <p>No orders found.</p>
+  </div>
+</div>
+
+
+<div *ngIf="showCart">
+  <h2>Cart</h2>
+  <ul>
+    <li *ngFor="let product of cart">
+      {{ product.id }} - {{ product.name }} - {{ product.description }} - {{ product.price }}- {{ product.quantity }}- {{ product.state }}
+      <button (click)="product.selected = true; createOrder(product)">Buy</button>
+    </li>
+  </ul>
+  <div *ngIf="cart && !cart.length">
+    <p>Cart is Empty. Don't be an ass and add a product :) </p>
+  </div>
+</div>

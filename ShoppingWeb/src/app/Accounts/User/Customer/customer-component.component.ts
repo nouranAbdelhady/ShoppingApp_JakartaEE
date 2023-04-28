@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from "../user.service";
+import {HttpClient} from "@angular/common/http";
+import { HomepageComponent } from '../../../Views/Homepage/homepage.compoent';
+
+const baseUrl = 'http://localhost:8080/UserService-1.0-SNAPSHOT/api/users'
+const productbaseUrl ='http://localhost:8080/ProductService-1.0-SNAPSHOT/api/products';
+const orderbaseUrl = 'http://localhost:8080/OrderService-1.0-SNAPSHOT/api/orders';
 
 @Component({
   selector: 'app-customer-component',
@@ -8,17 +13,37 @@ import {UserService} from "../user.service";
 })
 export class CustomerComponent {
   customers: any[] = [];
-
-  constructor(private userService: UserService) { }
+  orders: any[] = [];
+  cart: any[] = [];
+  products: any[] = [];
+  customerUsername: string | undefined = '';
+  companyUsername: string | undefined = '';
 
   ngOnInit(): void {
-    this.getAllCustomers();
+    this.customerUsername = this.homepage.loggedInUser.username
+    console.log("User init")
+    console.log("Customer username: " + this.customerUsername)
   }
 
-  getAllCustomers() {
-    this.userService.getAllCustomers().subscribe({
+  constructor(private http: HttpClient, private homepage: HomepageComponent) {
+  }
+
+
+  buttonClicked = false;
+  public showProducts: boolean = false;
+  public viewCurrent: boolean = false;
+  public viewPurchased: boolean = false;
+  public showCart: boolean = false;
+
+  viewProducts() {
+    this.showProducts = true;
+    this.viewCurrent = false;
+    this.viewPurchased = false;
+    this.showCart = false;
+    this.buttonClicked = !this.buttonClicked;
+    this.http.get<any[]>(`${productbaseUrl}`).subscribe({
       next: (data: any[]) => {
-        this.customers = data;
+        this.products = data;
         console.log(data);
       },
       error: (error: any) => {
@@ -27,7 +52,96 @@ export class CustomerComponent {
       complete: () => {
         console.log('Request completed successfully');
       }
+    });
+  }
+
+  viewCurrentOrders() {
+    this.showProducts = false;
+    this.viewCurrent = true;
+    this.viewPurchased = false;
+    this.showCart = false;
+    this.buttonClicked = !this.buttonClicked;
+    console.log(this.orders); // check if orders is initialized correctly
+    this.http.get<any[]>(`${baseUrl}/getCurrentAndPurchasedOrders/${this.customerUsername}/created`).subscribe({
+      next: (data: any[]) => {
+        this.orders = data;
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Request completed successfully')
+      }
+    });
+  }
+
+
+  viewPurchasedOrders() {
+    this.showProducts = false;
+    this.viewCurrent = false;
+    this.viewPurchased = true;
+    this.showCart = false;
+    this.buttonClicked = !this.buttonClicked;
+    console.log(this.orders); // check if orders is initialized correctly
+    this.http.get<any[]>(`${baseUrl}/getCurrentAndPurchasedOrders/${this.customerUsername}/purchased`).subscribe({
+      next: (data: any[]) => {
+        this.orders = data;
+        console.log(data);
+      },
+      error: (error: any) => {
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Request completed successfully')
+      }
+    });
+  }
+
+
+  addToCart(product: any) {
+    this.cart.push(product); // add product to cart
+    selected: false
+    console.log(`Added ${product.name} to cart.`);
+    alert(`Added ${product.name} to cart.`);
+  }
+
+  viewCart() {
+    this.showProducts = false;
+    this.viewCurrent = false;
+    this.viewPurchased = false;
+    this.showCart = true;
+    this.buttonClicked = !this.buttonClicked;
+    if (this.buttonClicked) {
+      this.cart.forEach((product: any) => {
+        product.selected = false;
+      });
     }
-    );
+  }
+
+  createOrder(product: any) {
+    const order = {
+      username: this.customerUsername,
+      productId: product.id,
+      amount: product.price,
+      state: "created"
+    };
+
+    fetch('http://localhost:8080/OrderService-1.0-SNAPSHOT/api/orders', {
+      method: 'POST',
+      body: JSON.stringify(order),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Order created:', data);
+        alert('Order created!');
+      })
+      .catch(error => {
+        console.error('Error creating order:', error);
+        alert('Error creating order!');
+      });
   }
 }
