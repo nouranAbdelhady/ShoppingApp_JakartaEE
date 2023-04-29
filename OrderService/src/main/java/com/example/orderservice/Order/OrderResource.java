@@ -62,4 +62,18 @@ public class OrderResource {
     public List<Order> getOrderByNameAndState(@PathParam("username") String username, @PathParam("state") String state) {
         return orderService.getOrderByNameAndState(username,state);
     }
+
+    @GET
+    @Path("/productId/{productId}")
+    public List<Order> getOrdersByProductId(@PathParam("productId") int productId) {
+        return orderService.getOrdersByProductId(productId);
+    }
+
+    @GET
+    @Path("/getCustomerDetailsbyUsername/{username}")
+    public List<List<String>> getCustomerDetailsbyUsername(@PathParam("username") String username) {
+        return orderService.getCustomerDetailsbyUsername(username);
+    }
+
+
 }

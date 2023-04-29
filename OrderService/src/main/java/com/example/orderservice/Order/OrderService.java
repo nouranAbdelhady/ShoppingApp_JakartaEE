@@ -4,9 +4,16 @@ import jakarta.ejb.Stateless;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -14,6 +21,8 @@ public class OrderService {
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("order");
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+    private String userServiceUrl = "http://localhost:8080/UserService-1.0-SNAPSHOT/api/users";
 
     public List<Order> getAllOrders() {
         TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o", Order.class);
@@ -66,5 +75,75 @@ public class OrderService {
         List<Order> orders = query.getResultList();
         return orders;
     }
+
+    public List<Order> getOrdersByProductId(int productId) {
+        TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.productId = :productId", Order.class);
+        query.setParameter("productId", productId);
+        List<Order> orders = query.getResultList();
+        return orders;
+    }
+
+    public List<List<String>> getCustomerDetailsbyUsername(String target) {
+        try {
+            URL url = new URL(userServiceUrl + "/username/" + target);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+
+            conn.disconnect();
+
+            String response = responseBuilder.toString();
+            System.out.println("Response: " + response); // print the response string
+            JSONObject jsonObject = new JSONObject(response);
+
+            String username = jsonObject.getString("username");
+            String fullname = jsonObject.getString("fullname");
+            String email = jsonObject.getString("email");
+            String password = jsonObject.getString("password");
+            String type= jsonObject.getString("type");
+            JSONObject geographicalRegion = jsonObject.getJSONObject("geographicalRegion");
+            int geoId = geographicalRegion.getInt("id");
+            String geoName = geographicalRegion.getString("name");
+
+            // check if geoName ends with a certain character or substring
+            if (geoName.endsWith("\"")) {
+                geoName = geoName.substring(0, geoName.length() - 1);
+            }
+
+            List<String> customer = new ArrayList<>();
+            customer.add(username);
+            customer.add(fullname);
+            customer.add(email);
+            customer.add(password);
+            customer.add(type);
+            customer.add(String.valueOf(geoId));
+            customer.add(geoName);
+
+            List<List<String>> customers = new ArrayList<>();
+            customers.add(customer);
+
+            System.out.println("Customers: " + customers);
+            return customers;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
 
