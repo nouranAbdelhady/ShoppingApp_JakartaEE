@@ -169,7 +169,7 @@ public class UserService {
         try {
             URL url = new URL(orderServiceUrl + "/getByName/" + target);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            System.out.println("Connecting to URL: " + url); // Add this line
+            System.out.println("Connecting to URL: " + url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
