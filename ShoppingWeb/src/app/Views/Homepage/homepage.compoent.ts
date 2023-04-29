@@ -4,6 +4,10 @@ import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../Accounts/User/auth.service";
 import {Router} from "@angular/router";
 
+
+const notificationUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/notifactions'
+
+
 @Component({
   selector: 'app-homepage-component',
   templateUrl: './homepage.component.html',
@@ -22,6 +26,15 @@ export class HomepageComponent implements OnInit{
   }
 
   title = 'Shopping Homepage';
+  showingNotifications = false;
+  notificationCount = 0;
+  notificationList: any = {
+    id: '',
+    date: '',
+    message: '',
+    sender_username: '',
+    targeted_username: '',
+  };
   loggedInUser: User = {
     id: '',
     username: '',
@@ -45,6 +58,7 @@ export class HomepageComponent implements OnInit{
           console.log("User logged in")
           this.loggedIn = true;
           this.loggedInUser = res;
+          this.getNotifications();
         }
       }
     })
@@ -79,6 +93,30 @@ export class HomepageComponent implements OnInit{
   goToProfilePage() {
     // Navigate to the user's profile page
     this.router.navigate(['/profile']);
+  }
+
+  showNotifications() {
+    this.getNotifications();
+    this.showingNotifications = !this.showingNotifications;
+  }
+
+  getNotifications() {
+    this.http.get<any[]>(`${notificationUrl}/receiver/${this.loggedInUser.username}`).subscribe({
+      next: (res) => {
+        console.log("Notifications: ");
+        console.log(res);
+        this.notificationList = res;
+        this.notificationCount = res.length;
+      }
+    })
+  }
+
+  acceptNotification(notificationId: any) {
+    console.log("Accepting notification: " + notificationId);
+  }
+
+  rejectNotification(notificationId: any) {
+    console.log("Rejecting notification: " + notificationId);
   }
 
 }

@@ -147,8 +147,18 @@ CREATE TABLE company_regions
     CONSTRAINT pk_company_regions PRIMARY KEY (id)
 );
 
+CREATE TABLE notification
+(
+    id                INT AUTO_INCREMENT NOT NULL,
+    targeted_username VARCHAR(255)       NULL,
+    message           VARCHAR(255)       NULL,
+    sender_username   VARCHAR(255)       NULL,
+    date              VARCHAR(255)       NULL,
+    CONSTRAINT pk_notification PRIMARY KEY (id)
+);
+
  /* Inserting Data */
 
-INSERT INTO `company_regions` VALUES (1,'dlc','Maadi'),(2,'dlc','Fifth Settlement'),(3,'dlc','Sheikh Zayed'),(4,'shipping_company2','Zamalek'),(5,'shipping_company2','Dokki');
+INSERT INTO `company_regions` VALUES (1,'dlc','Maadi'),(2,'dlc','Fifth Settlement'),(3,'dlc','Sheikh Zayed'),(4,'shipping_company2','Zamalek'),(5,'shipping_company2','Dokki'),(6,'shipping_company2','Maadi');
 INSERT INTO `shipping_company` VALUES (1,'dlc','password_update'),(2,'shipping_company2','password_update');
 ------------------------------------------------------------------------------------------------

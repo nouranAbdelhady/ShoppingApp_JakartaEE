@@ -23,9 +23,76 @@ nav a:hover {
   color: #333;
 }
 
-/* Styles for the main content */
-main {
-  margin-top: 50px;
-  padding: 20px;
+/* Styles for the active notification button */
+.notification-icon.active {
+  background-color: #006B8F;
+  color: #fff;
 }
 
+/* Styles for the notification dropdown */
+.notification-dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #333;
+  padding: 10px;
+  z-index: 1;
+}
+
+.notification-dropdown p {
+  margin: 0;
+  padding: 5px;
+  border-bottom: 1px solid #333;
+  color: #222222;
+}
+
+/* Styles for the notification buttons */
+.notification-button {
+  background-color: #008CBA;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.notification-button:hover {
+  background-color: #fff;
+  color: #008CBA;
+}
+
+/* Styles for the accept and reject buttons */
+.accept-button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.accept-button:hover {
+  background-color: #fff;
+  color: #4CAF50;
+}
+
+.reject-button {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reject-button:hover {
+  background-color: #fff;
+  color: #f44336;
+}

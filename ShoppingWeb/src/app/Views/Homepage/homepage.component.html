@@ -16,6 +16,28 @@
     <h2>
       Logged in as <a (click)="goToProfilePage()">{{ this.loggedInUser.username }}</a>
     </h2>
+
+    <div class="notification-container">
+      <button (click)="showNotifications()" class="notification-icon" [ngClass]="{'active': showingNotifications}">
+        <i class="fas fa-bell"></i>
+        <span class="notification-count">{{ notificationCount }}</span>
+      </button>
+      <div *ngIf="showingNotifications" class="notification-dropdown">
+        <div *ngIf="notificationList.length > 0">
+          <div *ngFor="let notification of notificationList" class="notification-item">
+            <p>{{ notification.message }}</p>
+            <div class="notification-buttons">
+              <button (click)="acceptNotification(notification.id)" class="notification-button notification-button-accept">Accept</button>
+              <button (click)="rejectNotification(notification.id)" class="notification-button notification-button-reject">Reject</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="notificationList.length === 0">
+          <p>No new notifications</p>
+        </div>
+      </div>
+    </div>
+
     <a (click)="logoutUser()">Logout</a>
   </nav>
 
