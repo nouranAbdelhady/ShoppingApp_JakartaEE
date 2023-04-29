@@ -46,3 +46,94 @@ tr:hover {
   background-color: #f5f5f5;
 }
 
+
+/* Set default font and background color */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Style the products container */
+.products-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the products list */
+.products-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Style the product card */
+.product-card {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Style the product image */
+.product-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* Style the "Add to Cart" button */
+.add-to-cart-button {
+  background-color: #008CBA;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-to-cart-button:hover {
+  background-color: #006B8F;
+}
+
+/* Style the product details */
+.product-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-details h3 {
+  margin: 0;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.product-details p {
+  margin: 0;
+}
+
+/* Style the product price */
+.product-price {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Style the product quantity and state */
+.product-quantity,
+.product-state {
+  font-style: italic;
+}
+

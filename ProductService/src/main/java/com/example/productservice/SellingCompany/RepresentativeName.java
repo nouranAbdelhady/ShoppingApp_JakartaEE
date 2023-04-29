@@ -3,8 +3,10 @@ package com.example.productservice.SellingCompany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "representative_name")
 public class RepresentativeName {
     @Id
     @Column(name = "name", nullable = false)

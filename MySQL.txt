@@ -13,8 +13,17 @@ CREATE TABLE Account
 ALTER TABLE Account
     ADD CONSTRAINT uc_account_username UNIQUE (username);
 
+/* Inserting Data */
+INSERT INTO `account` VALUES
+(1,'admin1','admin','Admin',false),
+(2,'amazon','update_password','Selling_Company',false),
+(3,'jumia','³K₸2tC8h','Selling_Company',false),
+(4,'nouranahady','password','Customer',false),
+(5,'sarahalsisi','password','Customer',false),
+(6,'sylviasami','password','Customer',false),
+(7,'dlc','password_update','Shipping_Company',false),
+(8,'shipping_company2','password_update','Shipping_Company',false);
 ------------------------------------------------------------------------------------------------
-
 CREATE database userr;
 USE userr;
 CREATE TABLE GeographicalRegion
@@ -44,9 +53,17 @@ ALTER TABLE Userr
 
 ALTER TABLE Userr
     ADD CONSTRAINT FK_USERR_ON_GEOGRAPHICAL_REGION FOREIGN KEY (geographical_region_id) REFERENCES GeographicalRegion (id);
-    
-------------------------------------------------------------------------------------------------
 
+/* Inserting Data */
+INSERT INTO `geographicalregion` VALUES (1,'Dokki'),(2,'Fifth Settlement'),(3,'Maadi'),(4,'Zamalek'),(5,'6 October'),(6,'Downtown'),(7,'Heliopolis'),(8,'Nasr City'),(9,'New Cairo'),(10,'Sheikh Zayed');
+
+INSERT INTO `userr` VALUES
+(1,'nouranahady','Nouran Abdelhady','nouran@gmail.com','password','Customer',3),
+(2,'admin1','admin1 admin1','admin2@gmail.com','admin','Admin',NULL),
+(3,'sarahalsisi','Sarah Alsisi','sarah@gmail.com','password','Customer',2),
+(4,'sylviasami','Syvlia Sami','sylvia@gmail.com','password','Customer',1),
+(5,'admin2','admin2 admin2','admin2@gmail.com','admin','Admin',NULL);
+------------------------------------------------------------------------------------------------
 CREATE database product;
 USE product;
 CREATE TABLE selling_company
@@ -59,7 +76,7 @@ CREATE TABLE selling_company
 );
 ALTER TABLE selling_company
     ADD CONSTRAINT uc_selling_company_name UNIQUE (name);
-CREATE TABLE RepresentativeName
+CREATE TABLE representative_name
 (
     name VARCHAR(255) NOT NULL,
     CONSTRAINT pk_representativename PRIMARY KEY (name)
@@ -71,16 +88,28 @@ CREATE TABLE Product
     `description`      VARCHAR(255)       NULL,
     price              DOUBLE             NOT NULL,
     quantity           INT                NOT NULL,
-    state              VARCHAR(255)       NULL,
+    state              VARCHAR(45)       NULL,
     selling_company_id INT                NULL,
     CONSTRAINT pk_product PRIMARY KEY (id)
 );
 
 ALTER TABLE Product
     ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);
-    
-------------------------------------------------------------------------------------------------
 
+ALTER TABLE `product`.`product`
+ADD COLUMN `imageUrl` VARCHAR(300) NULL AFTER `selling_company_id`;
+
+/* Inserting Data */
+INSERT INTO `representative_name` VALUES ('amazon'),('amazon2'),('jumia'),('noon'),('shopify'),('souq');
+INSERT INTO `selling_company` VALUES (3,'jumia','³K₸2tC8h',false),(2,'amazon','update_password',false);
+
+INSERT INTO `product` VALUES
+(1,'Nike Dunk High','this is a description for Nike Dunk',4000.5,10,'available',2,'https://cdn-images.farfetch-contents.com/17/56/62/94/17566294_36494893_480.jpg'),
+(2,'Adidas Super Star','this is a description for Adidas Super Star',3500.5,7,'available',3,'https://cdn-images.farfetch-contents.com/14/59/30/04/14593004_30783527_1000.jpg'),
+(3,'Nike Uptempo','this is a description for Nike Uptempo',7500,20,'available',2,'https://cdn-images.farfetch-contents.com/13/81/23/55/13812355_17043863_600.jpg'),
+(4,'Nike Air Max','this is a description for Nike Air Max',5600,5,'available',2,'https://cdn-images.farfetch-contents.com/19/85/92/17/19859217_44483962_480.jpg'),
+(5,'Adidas Originals Oztral','this is a description for Adidas Originals Oztral',9000,3,'available',3,'https://cdn-images.farfetch-contents.com/19/69/77/03/19697703_44060828_480.jpg');
+------------------------------------------------------------------------------------------------
 create database `order`;
 CREATE TABLE `order`.`order` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -96,9 +125,7 @@ CHANGE COLUMN `amount` `amount` DOUBLE NOT NULL ;
 
  ALTER TABLE `order`.`order` 
 DROP COLUMN `shipping_address`;
-
 ------------------------------------------------------------------------------------------------
-
 CREATE database shipping;
 USE shipping;
 CREATE TABLE shipping_company
@@ -119,3 +146,9 @@ CREATE TABLE company_regions
     region              VARCHAR(255)       NULL,
     CONSTRAINT pk_company_regions PRIMARY KEY (id)
 );
+
+ /* Inserting Data */
+
+INSERT INTO `company_regions` VALUES (1,'dlc','Maadi'),(2,'dlc','Fifth Settlement'),(3,'dlc','Sheikh Zayed'),(4,'shipping_company2','Zamalek'),(5,'shipping_company2','Dokki');
+INSERT INTO `shipping_company` VALUES (1,'dlc','password_update'),(2,'shipping_company2','password_update');
+------------------------------------------------------------------------------------------------

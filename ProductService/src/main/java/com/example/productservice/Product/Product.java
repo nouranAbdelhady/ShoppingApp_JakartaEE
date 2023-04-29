@@ -16,6 +16,8 @@ public class Product implements Serializable {
     private int quantity;
     private String state;
 
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "selling_company_id")
     private SellingCompany sellingCompany;
@@ -30,6 +32,16 @@ public class Product implements Serializable {
         this.price = price;
         this.quantity = quantity;
         this.state = "Available";
+        this.sellingCompany = sellingCompany;
+    }
+
+    public Product(String name, String description, double price, int quantity, String imageUrl, SellingCompany sellingCompany) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.state = "Available";
+        this.imageUrl = imageUrl;
         this.sellingCompany = sellingCompany;
     }
 
@@ -97,4 +109,13 @@ public class Product implements Serializable {
                 ", sellingCompany=" + sellingCompany +
                 '}';
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
