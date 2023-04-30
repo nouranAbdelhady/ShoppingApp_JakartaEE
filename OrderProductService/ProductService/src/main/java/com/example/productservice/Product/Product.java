@@ -13,7 +13,6 @@ public class Product implements Serializable {
     private String name;
     private String description;
     private double price;
-    private int quantity;
     private String state;
 
     private String imageUrl;
@@ -26,20 +25,18 @@ public class Product implements Serializable {
         this.state="available";
     }
 
-    public Product(String name, String description, double price, int quantity, SellingCompany sellingCompany) {
+    public Product(String name, String description, double price, SellingCompany sellingCompany) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.quantity = quantity;
         this.state = "Available";
         this.sellingCompany = sellingCompany;
     }
 
-    public Product(String name, String description, double price, int quantity, String imageUrl, SellingCompany sellingCompany) {
+    public Product(String name, String description, double price, String imageUrl, SellingCompany sellingCompany) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.quantity = quantity;
         this.state = "Available";
         this.imageUrl = imageUrl;
         this.sellingCompany = sellingCompany;
@@ -77,14 +74,6 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public String getState() {
         return state;
     }
@@ -104,7 +93,6 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", quantity=" + quantity +
                 ", state='" + state + '\'' +
                 ", sellingCompany=" + sellingCompany +
                 '}';

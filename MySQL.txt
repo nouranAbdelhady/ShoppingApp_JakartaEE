@@ -81,34 +81,32 @@ CREATE TABLE representative_name
     name VARCHAR(255) NOT NULL,
     CONSTRAINT pk_representativename PRIMARY KEY (name)
 );
+
 CREATE TABLE Product
 (
     id                 INT AUTO_INCREMENT NOT NULL,
     name               VARCHAR(255)       NULL,
     `description`      VARCHAR(255)       NULL,
     price              DOUBLE             NOT NULL,
-    quantity           INT                NOT NULL,
-    state              VARCHAR(45)       NULL,
+    state              VARCHAR(255)       NULL,
     selling_company_id INT                NULL,
+    imageUrl           VARCHAR(255)       NULL,
     CONSTRAINT pk_product PRIMARY KEY (id)
 );
 
 ALTER TABLE Product
     ADD CONSTRAINT FK_PRODUCT_ON_SELLING_COMPANY FOREIGN KEY (selling_company_id) REFERENCES selling_company (id);
 
-ALTER TABLE `product`.`product`
-ADD COLUMN `imageUrl` VARCHAR(300) NULL AFTER `selling_company_id`;
-
 /* Inserting Data */
 INSERT INTO `representative_name` VALUES ('amazon'),('amazon2'),('jumia'),('noon'),('shopify'),('souq');
 INSERT INTO `selling_company` VALUES (3,'jumia','³K₸2tC8h',false),(2,'amazon','update_password',false);
 
 INSERT INTO `product` VALUES
-(1,'Nike Dunk High','this is a description for Nike Dunk',4000.5,10,'available',2,'https://cdn-images.farfetch-contents.com/17/56/62/94/17566294_36494893_480.jpg'),
-(2,'Adidas Super Star','this is a description for Adidas Super Star',3500.5,7,'available',3,'https://cdn-images.farfetch-contents.com/14/59/30/04/14593004_30783527_1000.jpg'),
-(3,'Nike Uptempo','this is a description for Nike Uptempo',7500,20,'available',2,'https://cdn-images.farfetch-contents.com/13/81/23/55/13812355_17043863_600.jpg'),
-(4,'Nike Air Max','this is a description for Nike Air Max',5600,5,'available',2,'https://cdn-images.farfetch-contents.com/19/85/92/17/19859217_44483962_480.jpg'),
-(5,'Adidas Originals Oztral','this is a description for Adidas Originals Oztral',9000,3,'available',3,'https://cdn-images.farfetch-contents.com/19/69/77/03/19697703_44060828_480.jpg');
+(1,'Nike Dunk High','this is a description for Nike Dunk',4000.5,'available',2,'https://cdn-images.farfetch-contents.com/17/56/62/94/17566294_36494893_480.jpg'),
+(2,'Adidas Super Star','this is a description for Adidas Super Star',3500.5,'available',3,'https://cdn-images.farfetch-contents.com/14/59/30/04/14593004_30783527_1000.jpg'),
+(3,'Nike Uptempo','this is a description for Nike Uptempo',7500,'available',2,'https://cdn-images.farfetch-contents.com/13/81/23/55/13812355_17043863_600.jpg'),
+(4,'Nike Air Max','this is a description for Nike Air Max',5600,'available',2,'https://cdn-images.farfetch-contents.com/19/85/92/17/19859217_44483962_480.jpg'),
+(5,'Adidas Originals Oztral','this is a description for Adidas Originals Oztral',9000,'available',3,'https://cdn-images.farfetch-contents.com/19/69/77/03/19697703_44060828_480.jpg');
 ------------------------------------------------------------------------------------------------
 create database `order`;
 CREATE TABLE `order`.`order` (

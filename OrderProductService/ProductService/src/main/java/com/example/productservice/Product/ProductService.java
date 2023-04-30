@@ -40,4 +40,14 @@ public class ProductService {
         return products;
     }
 
+    public String updateProductState(int productId, String state){
+        Product product = getProductById(productId);
+        if (product == null) {
+            return "Product not found";
+        }
+        product.setState(state);
+        updateProduct(product);
+        return "Product state updated";
+    }
+
 }

@@ -60,7 +60,6 @@ export class SellingCompanyComponent implements OnInit{
   newProductDescription = '';
   newImageUrl = '';
   newProductPrice = 0;
-  newProductQuantity = 0;
   addNewProduct() {
     this.createNewProductForm = !this.createNewProductForm;
     this.buttonClicked = false;
@@ -73,10 +72,9 @@ export class SellingCompanyComponent implements OnInit{
       name: this.newProductName,
       description: this.newProductDescription,
       price: this.newProductPrice,
-      quantity: this.newProductQuantity,
       imageUrl: this.newImageUrl
     };
-    console.log("New product: " + data.name + " " + data.description + " " + data.price + " " + data.quantity);
+    console.log("New product: " + data.name + " " + data.description + " " + data.price );
     console.log("Company username: "+this.companyUsername);
 
     this.http.post(`${baseUrl}/${this.companyUsername}/products`, data).subscribe({
@@ -93,7 +91,7 @@ export class SellingCompanyComponent implements OnInit{
     this.newProductName = '';
     this.newProductDescription = '';
     this.newProductPrice = 0;
-    this.newProductQuantity = 0;
+    this.newImageUrl = '';
   }
 
   deleteProduct(productId: number) {

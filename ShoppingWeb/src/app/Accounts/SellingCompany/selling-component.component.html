@@ -23,7 +23,6 @@
               <h3>{{ product.name }}</h3>
               <p class="product-description">{{ product.description }}</p>
               <p class="product-price">Price: ${{ product.price.toFixed(2) }}</p>
-              <p class="product-quantity">Quantity: {{ product.quantity }}</p>
               <p class="product-state">State: {{ product.state }}</p>
             </div>
           </div>
@@ -50,8 +49,6 @@
       <input type="text" [(ngModel)]="newImageUrl" name="imageUrl">
       <label>Price:</label>
       <input type="number" [(ngModel)]="newProductPrice" name="ProductPrice">
-      <label>Quantity:</label>
-      <input type="number" [(ngModel)]="newProductQuantity" name="ProductQuantity">
       <button type="submit">Create</button>
     </form>
   </div>

@@ -40,4 +40,12 @@ public class ProductResource {
     public List<Product> getProductsByState(@PathParam("state") String state) {
         return productService.getProductsByState(state);
     }
+
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("/updateState/{productId}")
+    public String updateProductState(@PathParam("productId") int productId, String state){
+        return productService.updateProductState(productId, state);
+    }
+
 }

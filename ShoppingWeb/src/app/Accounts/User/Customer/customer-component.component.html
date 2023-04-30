@@ -16,11 +16,10 @@
           <h3>{{ product.name }}</h3>
           <p class="product-description">{{ product.description }}</p>
           <p class="product-price">Price: ${{ product.price.toFixed(2) }}</p>
-          <p class="product-quantity">Quantity: {{ product.quantity }}</p>
           <p class="product-state">State: {{ product.state }}</p>
         </div>
       </div>
-      <button class="add-to-cart-button" (click)="addToCart(product)">Add to Cart</button>
+      <button *ngIf="product.state==='available'" class="add-to-cart-button" (click)="addToCart(product)">Add to Cart</button>
     </li>
   </ul>
 </div>
