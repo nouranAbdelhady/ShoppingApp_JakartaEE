@@ -67,6 +67,18 @@ export class HomepageComponent implements OnInit{
   }
 
   logoutUser(): void {
+    if (this.loggedInUser.type == "Customer"){
+      // notify that cart will be emptied (Ok/Cancel)
+      if (confirm("Are you sure you want to logout? Your cart will be emptied.")) {
+        // Logout
+
+      } else {
+        // Do not logout (skip the rest of the function)
+        return;
+      }
+    }
+
+    console.log("Logging out user: " + this.loggedInUser.username);
     this.authService.logout().subscribe({
       next: (res) => {
         console.log(res)
