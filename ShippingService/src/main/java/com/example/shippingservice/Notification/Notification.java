@@ -13,14 +13,17 @@ public class Notification {
     private String sender_username;
     private String date;
 
+    private boolean request;
+
     public Notification() {
     }
 
-    public Notification(String sender_username, String message, String targeted_username) {
+    public Notification(String sender_username, String message, String targeted_username, boolean request) {
         this.targeted_username = targeted_username;
         this.message = message;
         this.sender_username = sender_username;
         this.date = java.time.LocalDate.now().toString();
+        this.request = request;
     }
 
     public int getId() {
@@ -61,5 +64,13 @@ public class Notification {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isRequest() {
+        return request;
+    }
+
+    public void setRequest(boolean request) {
+        this.request = request;
     }
 }

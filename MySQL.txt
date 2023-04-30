@@ -154,6 +154,7 @@ CREATE TABLE notification
     message           VARCHAR(255)       NULL,
     sender_username   VARCHAR(255)       NULL,
     date              VARCHAR(255)       NULL,
+    request           BIT(1)             NOT NULL,
     CONSTRAINT pk_notification PRIMARY KEY (id)
 );
 

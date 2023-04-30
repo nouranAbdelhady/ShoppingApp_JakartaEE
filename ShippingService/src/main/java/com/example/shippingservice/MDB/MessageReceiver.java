@@ -29,7 +29,7 @@ public class MessageReceiver implements MessageListener {
 
             // Persist the notification
             System.out.println("Received message: " + messageBody);
-            this.persistNotification(new Notification(sender_username, response, receiver_username));
+            this.persistNotification(new Notification(sender_username, response, receiver_username, false));
         }
         catch (JMSException e)
         {

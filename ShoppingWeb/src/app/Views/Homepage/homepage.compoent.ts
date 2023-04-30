@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 
 
 const notificationUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/notifactions'
+const sendUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/send'
 
 
 @Component({
@@ -34,6 +35,7 @@ export class HomepageComponent implements OnInit{
     message: '',
     sender_username: '',
     targeted_username: '',
+    request: ''
   };
   loggedInUser: User = {
     id: '',
@@ -111,12 +113,30 @@ export class HomepageComponent implements OnInit{
     })
   }
 
-  acceptNotification(notificationId: any) {
+  acceptNotification(notificationId: number) {
     console.log("Accepting notification: " + notificationId);
+    if (this.loggedInUser.type="Shipping_company"){
+      console.log("Shipping company");
+      this.http.get<void>(`${sendUrl}/review_request/${notificationId}/YES`).subscribe({
+        next: () => {
+          console.log("Accepted Notification!");
+          this.getNotifications();    //update notifications
+        }
+      })
+    }
   }
 
   rejectNotification(notificationId: any) {
     console.log("Rejecting notification: " + notificationId);
+    if (this.loggedInUser.type="Shipping_company"){
+      console.log("Shipping company");
+      this.http.get<void>(`${sendUrl}/review_request/${notificationId}/NO`).subscribe({
+        next: () => {
+          console.log("Rejected Notification!");
+          this.getNotifications();    //update notifications
+        }
+      })
+    }
   }
 
 }

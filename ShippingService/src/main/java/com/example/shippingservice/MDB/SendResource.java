@@ -37,7 +37,7 @@ public class SendResource {
 
     @POST
     @Path("/request_shipping")
-    public String requestShipping(String body) throws InterruptedException {
+    public void requestShipping(String body) throws InterruptedException {
         // split body into request and customerUsername ";"
         String[] splitBody = body.split(";");
         String request = splitBody[0];
@@ -45,12 +45,12 @@ public class SendResource {
         //System.out.println("request: " + request);
         //System.out.println("customerUsername: " + customerUsername);
         test.requestShipping(request, customerUsername);
-        return request;
+        //return request;
     }
 
     @GET
     @Path("/review_request/{notification_id}/{response}")
-    public String reviewRequest(@PathParam("notification_id") int notification_id, @PathParam("response") String response){
-        return test.updateShippingRequest(notification_id, response);
+    public void reviewRequest(@PathParam("notification_id") int notification_id, @PathParam("response") String response){
+        test.updateShippingRequest(notification_id, response);
     }
 }
