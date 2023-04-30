@@ -119,6 +119,17 @@ CREATE TABLE `order`
     shipping_company VARCHAR(255)       NULL,
     CONSTRAINT pk_order PRIMARY KEY (id)
 );
+
+CREATE TABLE notification
+(
+    id                INT AUTO_INCREMENT NOT NULL,
+    targeted_username VARCHAR(255)       NULL,
+    message           VARCHAR(255)       NULL,
+    sender_username   VARCHAR(255)       NULL,
+    date              VARCHAR(255)       NULL,
+    request           BIT(1)             NOT NULL,
+    PRIMARY KEY (id)
+);
 ------------------------------------------------------------------------------------------------
 CREATE database shipping;
 USE shipping;
