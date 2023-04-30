@@ -43,15 +43,6 @@ public class OrderService {
         return orders;
     }
 
-    public void createOrder(Order order) {
-        entityManager.getTransaction().begin();
-        // Update region based on user's address
-        List<List<String>> userDetails = getCustomerDetailsbyUsername(order.getUsername());
-
-        entityManager.persist(order);
-        entityManager.getTransaction().commit();
-    }
-
     public boolean deleteOrder(int Id) {
         Order targetedOrder = getOrderByID(Id);
         entityManager.getTransaction().begin();

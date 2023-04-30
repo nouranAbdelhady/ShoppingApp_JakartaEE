@@ -2,6 +2,7 @@ package com.example.userservice.User.Admin;
 
 import com.google.gson.JsonArray;
 import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
@@ -13,23 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-@Singleton
+@Stateless
 public class AdminService {
 
     private String accountServiceUrl = "http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts";
     private String sellingCompanyServiceUrl = "http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company";
     private String shippingCompanyServiceUrl = "http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/shipping_company";
-
-    private static AdminService instance = null;
-
-    public static AdminService getInstance() {
-        if (instance == null) {
-            instance = new AdminService();
-            System.out.println("Singleton: instance created");
-        }
-        System.out.println("Singleton: instance already created");
-        return instance;
-    }
 
     public boolean addSellingCompany(String name) {
         System.out.println("You entered: " + name);

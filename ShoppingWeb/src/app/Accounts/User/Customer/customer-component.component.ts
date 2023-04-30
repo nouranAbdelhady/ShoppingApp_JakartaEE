@@ -127,7 +127,7 @@ export class CustomerComponent {
       state: "created"
     };
 
-    fetch('http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders', {
+    fetch('http://localhost:9314/OrderService-1.0-SNAPSHOT/api/purchase', {
       method: 'POST',
       body: JSON.stringify(order),
       headers: {
@@ -137,6 +137,8 @@ export class CustomerComponent {
       .then(response => response.json())
       .then(data => {
         console.log('Order created:', data);
+        // remove product from cart
+        this.cart = this.cart.filter((p: any) => p.id !== product.id);
         alert('Order created!');
       })
       .catch(error => {

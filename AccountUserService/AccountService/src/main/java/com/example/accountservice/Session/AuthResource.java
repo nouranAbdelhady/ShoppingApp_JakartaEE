@@ -49,7 +49,6 @@ public class AuthResource {
         if (session != null) {
             //loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
             session.invalidate();
-
         }
         // Reset the logged-in user in the session bean
         userSessionBean.logout();
@@ -64,10 +63,12 @@ public class AuthResource {
         HttpSession session = request.getSession();
         System.out.println("Session: " + session.getAttribute("username"));
         //Account loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
+
         Account loggedInUser = userSessionBean.getLoggedInAccount();
         if (loggedInUser == null) {
             return null;
         }
+
         return loggedInUser;
     }
 }

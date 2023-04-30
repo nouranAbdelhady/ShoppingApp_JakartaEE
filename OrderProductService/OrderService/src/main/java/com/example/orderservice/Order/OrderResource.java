@@ -31,11 +31,6 @@ public class OrderResource {
         return orderService.getOrderByUsername(username);
     }
 
-    @POST
-    public Order createOrder(Order order) {
-        orderService.createOrder(order);
-        return order;
-    }
 
     @DELETE
     @Path("/delete/{OrderId}")
