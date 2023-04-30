@@ -4,6 +4,8 @@ import jakarta.ejb.EJB;
 import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.json.JSONObject;
+
 import java.util.List;
 
 @Path("/orders")  //http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders
@@ -82,6 +84,12 @@ public class OrderResource {
     @Consumes(MediaType.TEXT_PLAIN)
     public String updateShippingCompany(@PathParam("OrderId") int id, String shippingCompany) {
         return orderService.updateShippingCompany(id,shippingCompany);
+    }
+
+    @GET
+    @Path("/getCompanybyProductId/{productId}")
+    public JSONObject getCompanybyProductId(@PathParam("productId") int productId) {
+        return orderService.getCompanybyProductId(productId);
     }
 
 }

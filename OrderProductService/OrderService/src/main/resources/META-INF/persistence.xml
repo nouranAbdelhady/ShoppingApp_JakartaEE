@@ -6,6 +6,7 @@
     <persistence-unit name="order" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.example.orderservice.Order.Order</class>
+        <class>com.example.orderservice.Notification.Notification</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

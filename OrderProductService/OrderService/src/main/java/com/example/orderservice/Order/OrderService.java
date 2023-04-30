@@ -26,6 +26,8 @@ public class OrderService {
     private String userServiceUrl = "http://localhost:16957/UserService-1.0-SNAPSHOT/api/users";
     private String productServiceUrl = "http://localhost:9314/ProductService-1.0-SNAPSHOT/api/products";
 
+    private String sellingServiceUrl = "http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company/products";
+
     public List<Order> getAllOrders() {
         TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o", Order.class);
         List<Order> orders = query.getResultList();
@@ -126,6 +128,35 @@ public class OrderService {
             return null;
         }
         return orders.get(0);
+    }
+
+    public JSONObject getCompanybyProductId(int productId) {
+        try {
+            URL url = new URL(sellingServiceUrl + "/productId/" + productId);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            System.out.println("Connecting to URL: " + url);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+                System.out.println("Output: " + output);
+            }
+            conn.disconnect();
+            String response = responseBuilder.toString();
+            System.out.println("Response: " + response); // print the response string
+            JSONObject jsonObject = new JSONObject(response);
+            return jsonObject;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<List<String>> getCustomerDetailsbyUsername(String target) {
