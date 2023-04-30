@@ -75,5 +75,11 @@ public class OrderResource {
         return orderService.getCustomerDetailsbyUsername(username);
     }
 
+    @PUT
+    @Path("/updateState/{OrderId}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String updateOrderState(@PathParam("OrderId") int id, String state) {
+        return orderService.updateOrderState(id,state);
+    }
 
 }

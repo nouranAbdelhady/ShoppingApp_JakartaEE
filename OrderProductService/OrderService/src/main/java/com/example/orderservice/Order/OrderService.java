@@ -68,6 +68,16 @@ public class OrderService {
         return orders;
     }
 
+    public String updateOrderState(int orderId, String state) {
+        Order order = getOrderByID(orderId);
+        if (order == null) {
+            return "Order not found";
+        }
+        order.setState(state);
+        updateOrder(order);
+        return "Order state updated successfully";
+    }
+
     public List<Order> getOrderByNameAndState(String username, String state) {
         TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.state = :state and o.username=:username", Order.class);
         query.setParameter("state", state);
