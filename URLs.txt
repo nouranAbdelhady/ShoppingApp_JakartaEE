@@ -1,0 +1,12 @@
+[Normal Server]
+Product & Order Service:
+http://localhost:9314/OrderService-1.0-SNAPSHOT/
+http://localhost:9314/ProductService-1.0-SNAPSHOT/
+
+Account & User Service:
+http://localhost:16957/AccountService-1.0-SNAPSHOT/
+http://localhost:16957/UserService-1.0-SNAPSHOT/
+
+[Message Driven Server]
+Shiiping Service
+http://localhost:8080/ShippingService-1.0-SNAPSHOT/

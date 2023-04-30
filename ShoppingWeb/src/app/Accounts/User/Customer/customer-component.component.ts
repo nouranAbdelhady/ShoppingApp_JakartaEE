@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import { HomepageComponent } from '../../../Views/Homepage/homepage.compoent';
 
-const baseUrl = 'http://localhost:8080/UserService-1.0-SNAPSHOT/api/users'
-const productbaseUrl ='http://localhost:8080/ProductService-1.0-SNAPSHOT/api/products';
-const orderbaseUrl = 'http://localhost:8080/OrderService-1.0-SNAPSHOT/api/orders';
+const baseUrl = 'http://localhost:16957/UserService-1.0-SNAPSHOT/api/users'
+const productbaseUrl ='http://localhost:9314/ProductService-1.0-SNAPSHOT/api/products';
+const orderbaseUrl = 'http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders';
 
 @Component({
   selector: 'app-customer-component',
@@ -127,7 +127,7 @@ export class CustomerComponent {
       state: "created"
     };
 
-    fetch('http://localhost:8080/OrderService-1.0-SNAPSHOT/api/orders', {
+    fetch('http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders', {
       method: 'POST',
       body: JSON.stringify(order),
       headers: {

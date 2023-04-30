@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../user.model";
 import {HttpClient} from "@angular/common/http";
 
-const baseUrl = 'http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts';
-const adminUrl = 'http://localhost:8080/UserService-1.0-SNAPSHOT/api/admin';
+const baseUrl = 'http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts';
+const adminUrl = 'http://localhost:16957/UserService-1.0-SNAPSHOT/api/admin';
 
 @Component({
   selector: 'app-admin-component',

@@ -17,8 +17,8 @@ public class ShippingCompanyService {
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    private String regionServiceUrl = "http://localhost:8080/UserService-1.0-SNAPSHOT/api/regions";
-    private String accountServiceUrl = "http://localhost:8080/AccountService-1.0-SNAPSHOT/api/accounts";
+    private String regionServiceUrl = "http://localhost:16957/UserService-1.0-SNAPSHOT/api/regions";
+    private String accountServiceUrl = "http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts";
 
     public ShippingCompany addShippingCompany(ShippingCompany shippingCompany) {
         entityManager.getTransaction().begin();

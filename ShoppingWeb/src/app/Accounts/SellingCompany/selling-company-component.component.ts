@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {HomepageComponent} from "../../Views/Homepage/homepage.compoent";
 
-const baseUrl = 'http://localhost:8080/ProductService-1.0-SNAPSHOT/api/selling_company';
+const baseUrl = 'http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company';
 @Component({
   selector: 'app-selling-company-component',
   templateUrl: './selling-component.component.html',

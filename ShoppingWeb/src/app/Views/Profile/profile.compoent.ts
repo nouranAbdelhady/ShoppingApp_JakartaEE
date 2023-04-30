@@ -4,11 +4,11 @@ import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../Accounts/User/auth.service";
 import {Router} from "@angular/router";
 
-const baseUrl = 'http://localhost:8080/AccountService-1.0-SNAPSHOT/api/auth';
-const userUrl = 'http://localhost:8080/UserService-1.0-SNAPSHOT/api/users';
-const regionUrl = 'http://localhost:8080/UserService-1.0-SNAPSHOT/api/regions';
+const baseUrl = 'http://localhost:16957/AccountService-1.0-SNAPSHOT/api/auth';
+const userUrl = 'http://localhost:16957/UserService-1.0-SNAPSHOT/api/users';
+const regionUrl = 'http://localhost:16957/UserService-1.0-SNAPSHOT/api/regions';
 const shippingUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/shipping_company';
-const sellingUrl = 'http://localhost:8080/ProductService-1.0-SNAPSHOT/api/selling_company';
+const sellingUrl = 'http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company';
 
 @Injectable({
   providedIn: 'root'

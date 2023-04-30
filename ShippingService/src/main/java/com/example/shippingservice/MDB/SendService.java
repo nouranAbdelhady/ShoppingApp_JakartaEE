@@ -27,7 +27,7 @@ public class SendService {
     @EJB
     ShippingCompanyService shippingCompanyService;
 
-    private String customerServiceUrl= "http://localhost:8080/UserService-1.0-SNAPSHOT/api/users";
+    private String customerServiceUrl= "http://localhost:16957/UserService-1.0-SNAPSHOT/api/users";
 
     public void sendMessage(String sender, String sentMessage, String receiver) {
         String toSendMessage = sender + "," + sentMessage + "," + receiver;
