@@ -86,6 +86,12 @@ public class SellingCompanyResource {
         return sellingCompanyService.getAllRepresentativeNames();
     }
 
+    @GET
+    @Path("/products/productId/{productId}")
+    public SellingCompany getSellingCompanyByProductId(@PathParam("productId") int productId) {
+        return sellingCompanyService.getSellingCompanyByProductId(productId);
+    }
+
     @POST
     @Path("representative_name")
     public void addRepresentativeName(RepresentativeName representativeName) {

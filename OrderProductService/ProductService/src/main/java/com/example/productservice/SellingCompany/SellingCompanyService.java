@@ -179,6 +179,14 @@ public class SellingCompanyService {
                 .getResultList();
     }
 
+    public SellingCompany getSellingCompanyByProductId(int productId) {
+        String jpql = "SELECT s FROM SellingCompany s JOIN s.products p WHERE p.id = :productId";
+        TypedQuery<SellingCompany> query = entityManager.createQuery(jpql, SellingCompany.class)
+                .setParameter("productId", productId);
+        List<SellingCompany> resultList = query.getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
+    }
+
     // RepresentiveName
     public List<RepresentativeName> getAllRepresentativeNames() {
         return entityManager.createQuery("SELECT r FROM RepresentativeName r", RepresentativeName.class).getResultList();
