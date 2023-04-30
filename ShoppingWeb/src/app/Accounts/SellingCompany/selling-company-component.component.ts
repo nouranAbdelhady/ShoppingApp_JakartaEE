@@ -58,6 +58,7 @@ export class SellingCompanyComponent implements OnInit{
   createNewProductForm=false
   newProductName = '';
   newProductDescription = '';
+  newImageUrl = '';
   newProductPrice = 0;
   newProductQuantity = 0;
   addNewProduct() {
@@ -73,6 +74,7 @@ export class SellingCompanyComponent implements OnInit{
       description: this.newProductDescription,
       price: this.newProductPrice,
       quantity: this.newProductQuantity,
+      imageUrl: this.newImageUrl
     };
     console.log("New product: " + data.name + " " + data.description + " " + data.price + " " + data.quantity);
     console.log("Company username: "+this.companyUsername);

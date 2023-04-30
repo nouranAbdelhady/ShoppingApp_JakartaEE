@@ -15,10 +15,19 @@
   <div *ngIf="buttonClicked">
     <div *ngIf="products && products.length">
       <h2>List of Products:</h2>
-      <ul>
-        <li *ngFor="let product of products">
-          {{product.id}} - {{ product.name }} - {{ product.description }} - {{ product.price }}
-          <button (click)="deleteProduct(product.id)">x</button>
+      <ul class="products-list">
+        <li *ngFor="let product of products" class="product-card">
+          <div class="product-info">
+            <img src="{{ product.imageUrl }}" alt="{{ product.name }}" class="product-image">
+            <div class="product-details">
+              <h3>{{ product.name }}</h3>
+              <p class="product-description">{{ product.description }}</p>
+              <p class="product-price">Price: ${{ product.price.toFixed(2) }}</p>
+              <p class="product-quantity">Quantity: {{ product.quantity }}</p>
+              <p class="product-state">State: {{ product.state }}</p>
+            </div>
+          </div>
+          <button class="add-to-cart-button" (click)="deleteProduct(product.id)">x</button>
         </li>
       </ul>
     </div>
@@ -37,6 +46,8 @@
       <input type="text" [(ngModel)]="newProductName" name="ProductName">
       <label>Description:</label>
       <input type="text" [(ngModel)]="newProductDescription" name="ProductDescription">
+      <label>Image URL:</label>
+      <input type="text" [(ngModel)]="newImageUrl" name="imageUrl">
       <label>Price:</label>
       <input type="number" [(ngModel)]="newProductPrice" name="ProductPrice">
       <label>Quantity:</label>
