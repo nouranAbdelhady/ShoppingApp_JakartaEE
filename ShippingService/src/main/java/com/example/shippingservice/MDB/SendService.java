@@ -99,7 +99,7 @@ public class SendService {
         if(shippingCompanies.size() == 0){
             // No shipping company available
             String message = "No shipping company available";
-            sendMessage("null", message, customerUsername);
+            sendMessage("x", message, customerUsername);
             // Reject order (state=failed)
             return message;
         }
@@ -142,6 +142,45 @@ public class SendService {
             customerMessage = "Shipping company: "+notification.getTargeted_username()+" accepted your request for order: "+orderId+"!";
             shippingCompanyMessage = "You accepted the request for: "+notification.getSender_username()+" for order: "+orderId;
             updateOrderState = "shipping";
+
+
+            // update order's shipping company
+            String shippingCompanyUsername = notification.getTargeted_username();
+            String orderUrl = orderServiceUrl + "/updateShippingCompany/" + orderId;
+            System.out.println("Update: "+orderId+" to shipping company: "+shippingCompanyUsername);
+            try {
+                URL url = new URL(orderUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                System.out.println("Connecting to URL: " + url);
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Content-Type", "text/plain");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true);
+
+                String input = shippingCompanyUsername;
+                OutputStream os = conn.getOutputStream();
+                os.write(input.getBytes());
+                os.flush();
+
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                }
+
+                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+                StringBuilder responseBuilder = new StringBuilder();
+                String output;
+                while ((output = br.readLine()) != null) {
+                    responseBuilder.append(output);
+                    System.out.println("Output: " + output);
+                }
+                conn.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+
         }else{
             // Shipping company rejected the request
             shippingCompanyMessage = "You rejected the request for: "+notification.getSender_username() +" for order: "+orderId;

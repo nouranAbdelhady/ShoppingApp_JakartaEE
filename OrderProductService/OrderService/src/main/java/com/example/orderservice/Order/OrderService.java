@@ -45,6 +45,9 @@ public class OrderService {
 
     public void createOrder(Order order) {
         entityManager.getTransaction().begin();
+        // Update region based on user's address
+        List<List<String>> userDetails = getCustomerDetailsbyUsername(order.getUsername());
+
         entityManager.persist(order);
         entityManager.getTransaction().commit();
     }
@@ -181,6 +184,16 @@ public class OrderService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String updateShippingCompany(int orderId, String shippingCompany) {
+        Order order = getOrderByID(orderId);
+        if (order == null) {
+            return "Order not found";
+        }
+        order.setShipping_company(shippingCompany);
+        updateOrder(order);
+        return "Shipping company updated successfully";
     }
 
 }

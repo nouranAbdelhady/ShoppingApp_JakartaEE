@@ -13,6 +13,7 @@ public class Order implements Serializable {
     private int productId;
     private double amount;
     private String state;
+    private String shipping_company;
 
     public Order() {}
 
@@ -22,6 +23,7 @@ public class Order implements Serializable {
         this.productId=productID;
         this.amount=amount;
         this.state=state;
+        this.shipping_company="";
     }
 
     public int getId() {
@@ -62,5 +64,13 @@ public class Order implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getShipping_company() {
+        return shipping_company;
+    }
+
+    public void setShipping_company(String shipping_company) {
+        this.shipping_company = shipping_company;
     }
 }

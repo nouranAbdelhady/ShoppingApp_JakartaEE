@@ -22,6 +22,7 @@ export class SellingCompanyComponent implements OnInit{
 
   buttonClicked = false;
   viewProductsOnSale() {
+    this.prevButtonClicked = false;
     this.buttonClicked = !this.buttonClicked;
     this.createNewProductForm = false;
     this.http.get<any[]>(`${baseUrl}/${this.companyUsername}/products/state/available`).subscribe({
@@ -38,8 +39,10 @@ export class SellingCompanyComponent implements OnInit{
     });
   }
 
+  prevButtonClicked = false;
   viewPreviouslySold() {
     this.buttonClicked = !this.buttonClicked;
+    this.prevButtonClicked = true;
     this.createNewProductForm = false;
     this.http.get<any[]>(`${baseUrl}/${this.companyUsername}/products/state/sold`).subscribe({
       next: (data: any[]) => {

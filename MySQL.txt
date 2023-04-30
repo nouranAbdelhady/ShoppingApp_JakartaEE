@@ -109,20 +109,16 @@ INSERT INTO `product` VALUES
 (5,'Adidas Originals Oztral','this is a description for Adidas Originals Oztral',9000,'available',3,'https://cdn-images.farfetch-contents.com/19/69/77/03/19697703_44060828_480.jpg');
 ------------------------------------------------------------------------------------------------
 create database `order`;
-CREATE TABLE `order`.`order` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(255) NOT NULL,
-  `productId` INT NOT NULL,
-  `amount` INT NOT NULL,
-  `shipping_address` VARCHAR(255) NOT NULL,
-  `state` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`));
-  
-  ALTER TABLE `order`.`order` 
-CHANGE COLUMN `amount` `amount` DOUBLE NOT NULL ;
-
- ALTER TABLE `order`.`order` 
-DROP COLUMN `shipping_address`;
+CREATE TABLE `order`
+(
+    id               INT AUTO_INCREMENT NOT NULL,
+    username         VARCHAR(255)       NULL,
+    productId        INT                NOT NULL,
+    amount           DOUBLE             NOT NULL,
+    state            VARCHAR(255)       NULL,
+    shipping_company VARCHAR(255)       NULL,
+    CONSTRAINT pk_order PRIMARY KEY (id)
+);
 ------------------------------------------------------------------------------------------------
 CREATE database shipping;
 USE shipping;

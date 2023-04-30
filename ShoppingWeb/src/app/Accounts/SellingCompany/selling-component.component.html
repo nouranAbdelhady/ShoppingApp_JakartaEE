@@ -24,6 +24,11 @@
               <p class="product-description">{{ product.description }}</p>
               <p class="product-price">Price: ${{ product.price.toFixed(2) }}</p>
               <p class="product-state">State: {{ product.state }}</p>
+              <div *ngIf="prevButtonClicked">
+                <br>
+                <p class="product-price">Customer: {{ product.buyer }}</p>
+                <p class="product-price">Shipping Company: {{ product.seller }}</p>
+              </div>
             </div>
           </div>
           <button class="add-to-cart-button" (click)="deleteProduct(product.id)">x</button>

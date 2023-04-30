@@ -82,4 +82,11 @@ public class OrderResource {
         return orderService.updateOrderState(id,state);
     }
 
+    @PUT
+    @Path("/updateShippingCompany/{OrderId}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public String updateShippingCompany(@PathParam("OrderId") int id, String shippingCompany) {
+        return orderService.updateShippingCompany(id,shippingCompany);
+    }
+
 }
