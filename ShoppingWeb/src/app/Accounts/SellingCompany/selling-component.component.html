@@ -20,14 +20,14 @@
           <div class="product-info">
             <img src="{{ product.imageUrl }}" alt="{{ product.name }}" class="product-image">
             <div class="product-details">
-              <h3>{{ product.name }}</h3>
+              <h3>{{product.id}} - {{ product.name }}</h3>
               <p class="product-description">{{ product.description }}</p>
               <p class="product-price">Price: ${{ product.price.toFixed(2) }}</p>
               <p class="product-state">State: {{ product.state }}</p>
               <div *ngIf="prevButtonClicked">
                 <br>
-                <p class="product-price">Customer: {{ product.buyer }}</p>
-                <p class="product-price">Shipping Company: {{ product.seller }}</p>
+                <p class="product-price">Customer: {{ product.order.username }}</p>
+                <p class="product-price">Shipping Company: {{ product.order.shipping_company }}</p>
               </div>
             </div>
           </div>

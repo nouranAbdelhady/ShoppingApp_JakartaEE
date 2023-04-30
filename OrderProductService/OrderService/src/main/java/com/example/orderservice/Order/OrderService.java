@@ -127,11 +127,14 @@ public class OrderService {
         return orders;
     }
 
-    public List<Order> getOrdersByProductId(int productId) {
+    public Order getOrderByProductId(int productId) {
         TypedQuery<Order> query = entityManager.createQuery("SELECT o FROM Order o WHERE o.productId = :productId", Order.class);
         query.setParameter("productId", productId);
         List<Order> orders = query.getResultList();
-        return orders;
+        if (orders.size() == 0) {
+            return null;
+        }
+        return orders.get(0);
     }
 
     public List<List<String>> getCustomerDetailsbyUsername(String target) {

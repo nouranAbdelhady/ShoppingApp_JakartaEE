@@ -65,8 +65,8 @@ public class OrderResource {
 
     @GET
     @Path("/productId/{productId}")
-    public List<Order> getOrdersByProductId(@PathParam("productId") int productId) {
-        return orderService.getOrdersByProductId(productId);
+    public Order getOrdersByProductId(@PathParam("productId") int productId) {
+        return orderService.getOrderByProductId(productId);
     }
 
     @GET

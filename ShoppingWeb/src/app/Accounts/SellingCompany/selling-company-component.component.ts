@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {HomepageComponent} from "../../Views/Homepage/homepage.compoent";
 
 const baseUrl = 'http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company';
+const orderUrl = 'http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders';
 @Component({
   selector: 'app-selling-company-component',
   templateUrl: './selling-component.component.html',
@@ -54,6 +55,23 @@ export class SellingCompanyComponent implements OnInit{
       },
       complete: () => {
         console.log('Request completed successfully');
+
+        // send product id to order service to get order details (customer and shipping company)
+        for(let i=0; i<this.products.length; i++){
+          const productId: number= this.products[i].id;
+          console.log("Product id: "+productId);
+
+          this.http.get<any>(`${orderUrl}/productId/${productId}`).subscribe({
+            next: (data: any) => {
+              console.log("Orders for product "+productId);
+              //console.log(data);
+              this.products[i].order = data;
+            },
+            error: (error: any) => {
+              console.error(error);
+            }
+          });
+        }
       }
     });
   }
