@@ -121,25 +121,30 @@ public class SendService {
         if(notification == null){
             return "Notification not found";
         }
+        // Get order id from message
+        String[] messageArray = notification.getMessage().split(": ");
+        String orderId = messageArray[1];
+        System.out.println("Order id: " + orderId);
+
         String customerMessage = "";
         String shippingCompanyMessage = "";
         String updateOrderState = "";
         if(response.equals("YES")||response.equals("yes")){
             // Shipping company accepted the request
             // Send message to customer
-            sendMessage(notification.getTargeted_username(), notification.getTargeted_username()+" accepted your shipping request", notification.getSender_username());
+            sendMessage(notification.getTargeted_username(), notification.getTargeted_username()+" accepted your shipping request for order: "+orderId, notification.getSender_username());
 
             // Remove same notification to other shipping companies
             List<Notification> notifications = notificationService.getSimilarRequests(notification.getMessage(), notification.getDate());
             for (Notification notification1 : notifications) {
                 notificationService.deleteNotification(notification1.getId());
             }
-            customerMessage = "Shipping company: "+notification.getTargeted_username()+" accepted your request";
-            shippingCompanyMessage = "You accepted the request for: "+notification.getSender_username();
+            customerMessage = "Shipping company: "+notification.getTargeted_username()+" accepted your request for order: "+orderId+"!";
+            shippingCompanyMessage = "You accepted the request for: "+notification.getSender_username()+" for order: "+orderId;
             updateOrderState = "shipping";
         }else{
             // Shipping company rejected the request
-            shippingCompanyMessage = "You rejected the request for: "+notification.getSender_username();
+            shippingCompanyMessage = "You rejected the request for: "+notification.getSender_username() +" for order: "+orderId;
             // Check if there are other notifications with the same message and date
             List<Notification> notifications = notificationService.getSimilarRequests(notification.getMessage(), notification.getDate());
             // Remove this notification
@@ -147,7 +152,7 @@ public class SendService {
             if (notifications.size() == 1) {        // There is only this notification
                 // No other notifications with the same message and date
                 // Send message to customer
-                sendMessage(notification.getTargeted_username(), "No shipping company available", notification.getSender_username());
+                sendMessage(notification.getTargeted_username(), "No shipping company available to process order: "+orderId, notification.getSender_username());
                 customerMessage = "No shipping company available";
                 updateOrderState = "failed";
             }
@@ -158,14 +163,12 @@ public class SendService {
                 //System.out.println("0:"+notifications.get(0).getId());
             }
         }
-        // Get order id from message
-        String[] messageArray = notification.getMessage().split(": ");
-        String orderId = messageArray[1];
-        System.out.println("Order id: " + orderId);
+
 
         // Update order state
         System.out.println("Update order state to: " + updateOrderState);
-        String orderUrl = orderServiceUrl + "/updateState/" + orderId;
+        int orderIdInt = Integer.parseInt(orderId);
+        String orderUrl = orderServiceUrl + "/updateState/" + orderIdInt;
         try {
             URL url = new URL(orderUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
