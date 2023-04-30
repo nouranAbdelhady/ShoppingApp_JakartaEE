@@ -23,7 +23,7 @@ public class UserService {
 
     private String accountServiceUrl = "http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts";
 
-    private String orderServiceUrl = "http://localhost:9314ٍ/OrderService-1.0-SNAPSHOT/api/orders";
+    private String orderServiceUrl = "http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders";
 
     @PostConstruct
     public void testInit() {
@@ -341,7 +341,7 @@ public class UserService {
         try {
             URL url = new URL(orderServiceUrl + "/nameAndState/" + name + "/" + order_state);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            System.out.println("Connecting to URL: " + url); // Add this line
+            System.out.println("Connecting to URL: " + url);
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
