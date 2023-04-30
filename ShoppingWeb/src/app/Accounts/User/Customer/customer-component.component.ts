@@ -84,7 +84,7 @@ export class CustomerComponent {
     this.showCart = false;
     this.buttonClicked = !this.buttonClicked;
     console.log(this.orders); // check if orders is initialized correctly
-    this.http.get<any[]>(`${baseUrl}/getCurrentAndPurchasedOrders/${this.customerUsername}/purchased`).subscribe({
+    this.http.get<any[]>(`${baseUrl}/getPurchasedOrders/${this.customerUsername}`).subscribe({
       next: (data: any[]) => {
         this.orders = data;
         console.log(data);

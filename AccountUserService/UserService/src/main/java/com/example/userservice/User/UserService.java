@@ -260,7 +260,7 @@ public class UserService {
                     state = state.substring(0, state.length() - 1);
                 }
 
-                if (state.equals("purchased")) {
+                if (state.equals("shipping") || state.equals("delivered")) {
                     List<String> order = new ArrayList<>();
                     order.add(username);
                     order.add(productId);
