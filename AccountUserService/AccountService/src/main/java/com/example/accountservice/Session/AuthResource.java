@@ -30,7 +30,7 @@ public class AuthResource {
         if(loggedInUser!=null){
             // If login is successful, set the logged-in user in the session bean
             System.out.println("User logged in: " + loggedInUser.getUsername());
-            userSessionBean.login(loggedInUser);
+            //userSessionBean.login(loggedInUser);
             return loggedInUser;
         }
         else{
@@ -45,13 +45,13 @@ public class AuthResource {
         // Get the logged-in user from the session bean and clear the session
         HttpSession session = request.getSession(false); // Do not create a new session if it does not exist
         Account loggedInUser=null;
-        loggedInUser = userSessionBean.getLoggedInAccount();
+        //loggedInUser = userSessionBean.getLoggedInAccount();
         if (session != null) {
-            //loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
+            loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
             session.invalidate();
         }
         // Reset the logged-in user in the session bean
-        userSessionBean.logout();
+        //userSessionBean.logout();
         accountService.logout(loggedInUser);
         return loggedInUser;
     }
@@ -62,13 +62,12 @@ public class AuthResource {
         // Get the logged-in user from the session bean
         HttpSession session = request.getSession();
         System.out.println("Session: " + session.getAttribute("username"));
-        //Account loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
+        Account loggedInUser = accountService.getByUsername((String) session.getAttribute("username"));
 
-        Account loggedInUser = userSessionBean.getLoggedInAccount();
+        //Account loggedInUser = userSessionBean.getLoggedInAccount();
         if (loggedInUser == null) {
             return null;
         }
-
         return loggedInUser;
     }
 }

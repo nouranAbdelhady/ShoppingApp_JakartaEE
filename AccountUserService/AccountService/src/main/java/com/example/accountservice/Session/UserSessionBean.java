@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.Context;
 @Stateful
 @Local(UserSessionBean.class)
 public class UserSessionBean {
-    private static Account loggedInUser = null;
+    private Account loggedInUser = null;
 
     public void login(Account userr) {
         this.loggedInUser = userr;
