@@ -130,7 +130,7 @@ public class OrderService {
         return orders.get(0);
     }
 
-    public JSONObject getCompanybyProductId(int productId) {
+    public String getCompanyNameByProductId(int productId) {
         try {
             URL url = new URL(sellingServiceUrl + "/productId/" + productId);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -151,13 +151,14 @@ public class OrderService {
             String response = responseBuilder.toString();
             System.out.println("Response: " + response); // print the response string
             JSONObject jsonObject = new JSONObject(response);
-            return jsonObject;
+            return jsonObject.getString("name");
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
     public List<List<String>> getCustomerDetailsbyUsername(String target) {
         try {

@@ -20,9 +20,9 @@ public class PurchaseService {
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    NotificationService notificationService;
+    NotificationService notificationService = new NotificationService();
 
-    OrderService orderService;
+    OrderService orderService = new OrderService();
 
     public static PurchaseService getInstance() {
         if (instance == null) {
@@ -39,10 +39,10 @@ public class PurchaseService {
             entityManager.getTransaction().begin();
             entityManager.persist(newOrder);
             entityManager.getTransaction().commit();
+
             // Send a notification to the selling company
             int productId = newOrder.getProductId();
-            JSONObject companyInfo = orderService.getCompanybyProductId(productId);
-            String companyName = companyInfo.getString("name");
+            String companyName = orderService.getCompanyNameByProductId(productId);
 
             Notification notification = new Notification();
             notification.setCustomerUsername(newOrder.getUsername());
@@ -52,9 +52,13 @@ public class PurchaseService {
             notification.setRequest(true);
             notificationService.addNotification(notification);
 
-            return newOrder;
+            System.out.println("Notification added: " + notification);
+            return newOrder; // return the newly created order
         } catch (Exception e) {
+            System.err.println("Failed to add purchase: " + e.getMessage());
             return null;
         }
     }
+
+
 }

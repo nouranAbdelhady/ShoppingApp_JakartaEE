@@ -22,9 +22,11 @@ public class NotificationService {
     }
 
     public Notification addNotification(Notification notification) {
+        System.out.println("addNotification method called");
         entityManager.getTransaction().begin();
         entityManager.persist(notification);
         entityManager.getTransaction().commit();
+        System.out.println("Notification persisted: " + notification);
         return notification;
     }
 

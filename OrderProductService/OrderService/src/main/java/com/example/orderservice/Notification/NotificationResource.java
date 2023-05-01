@@ -6,7 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
 
-@Path("/notifactions")     //http://localhost:8080/OrderService-1.0-SNAPSHOT/api/notifactions
+@Path("/notifactions")     //http://localhost:9314/OrderService-1.0-SNAPSHOT/api/notifactions
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class NotificationResource {

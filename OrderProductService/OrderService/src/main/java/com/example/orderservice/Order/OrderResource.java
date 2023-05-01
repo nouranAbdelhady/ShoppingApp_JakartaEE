@@ -88,8 +88,8 @@ public class OrderResource {
 
     @GET
     @Path("/getCompanybyProductId/{productId}")
-    public JSONObject getCompanybyProductId(@PathParam("productId") int productId) {
-        return orderService.getCompanybyProductId(productId);
+    public String getCompanyNameByProductId(@PathParam("productId") int productId) {
+        return orderService.getCompanyNameByProductId(productId);
     }
 
 }
