@@ -47,7 +47,7 @@ public class PurchaseService {
             Notification notification = new Notification();
             notification.setCustomerUsername(newOrder.getUsername());
             notification.setTargetedSellingCompany(companyName);
-            notification.setMessage("A new order has been placed for your product with ID " + productId + ".");
+            notification.setMessage("A new order has been placed for your product with order ID " + newOrder.getId() + ".");
             notification.setDate(String.valueOf(new Date()));
             notification.setRequest(true);
             notificationService.addNotification(notification);
@@ -59,6 +59,4 @@ public class PurchaseService {
             return null;
         }
     }
-
-
 }
