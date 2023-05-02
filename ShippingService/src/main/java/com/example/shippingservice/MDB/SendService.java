@@ -205,44 +205,47 @@ public class SendService {
 
 
         // Update order state
-        System.out.println("Update order state to: " + updateOrderState);
-        int orderIdInt = Integer.parseInt(orderId);
-        String orderUrl = orderServiceUrl + "/updateState/" + orderIdInt;
-        try {
-            URL url = new URL(orderUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            System.out.println("Connecting to URL: " + url); // Add this line
-            conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Content-Type", "text/plain");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true); // Enable output writing
-            String input =  updateOrderState ;
-            System.out.println("Input: " + input);
-            OutputStream os = conn.getOutputStream();
-            os.write(input.getBytes());
-            os.flush();
+        if(updateOrderState.equals("failed") || updateOrderState.equals("shipping")){
+            System.out.println("Update order state to: " + updateOrderState);
+            int orderIdInt = Integer.parseInt(orderId);
+            String orderUrl = orderServiceUrl + "/updateState/" + orderIdInt;
+            try {
+                URL url = new URL(orderUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                System.out.println("Connecting to URL: " + url); // Add this line
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Content-Type", "text/plain");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setDoOutput(true); // Enable output writing
+                String input =  updateOrderState ;
+                System.out.println("Input: " + input);
+                OutputStream os = conn.getOutputStream();
+                os.write(input.getBytes());
+                os.flush();
 
-            if (conn.getResponseCode() != 200) {
-                System.out.println("Response code: " + conn.getResponseCode());
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                if (conn.getResponseCode() != 200) {
+                    System.out.println("Response code: " + conn.getResponseCode());
+                    throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                }
+
+                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+                StringBuilder responseBuilder = new StringBuilder();
+                String output;
+                while ((output = br.readLine()) != null) {
+                    responseBuilder.append(output);
+                    System.out.println("Output: " + output);
+                }
+                conn.disconnect();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-            StringBuilder responseBuilder = new StringBuilder();
-            String output;
-            while ((output = br.readLine()) != null) {
-                responseBuilder.append(output);
-                System.out.println("Output: " + output);
-            }
-            conn.disconnect();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            sendMessage("x", shippingCompanyMessage, notification.getTargeted_username());
         }
 
-        sendMessage("x", shippingCompanyMessage, notification.getTargeted_username());
         return customerMessage;
     }
 }

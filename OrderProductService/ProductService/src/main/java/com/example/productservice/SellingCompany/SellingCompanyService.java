@@ -31,13 +31,13 @@ public class SellingCompanyService {
     private String notificationServiceUrl = "http://localhost:9314/OrderService-1.0-SNAPSHOT/api/notifactions";
 
     private String orderServiceUrl = "http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders";
+    private String shippingServiceUrl = "http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/send";
 
     public void addSellingCompany(SellingCompany sellingCompany) {
         entityManager.getTransaction().begin();
         entityManager.persist(sellingCompany);
         entityManager.getTransaction().commit();
         ;
-
         // Add account using account service
         JsonObject account = Json.createObjectBuilder()
                 .add("username", sellingCompany.getName())
@@ -45,7 +45,6 @@ public class SellingCompanyService {
                 .add("type", "Selling_Company")
                 .build();
         System.out.println(account);
-
         // Send request to account service
         try {
             URL url = new URL(accountServiceUrl);
@@ -53,11 +52,9 @@ public class SellingCompanyService {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
-
             // Write the account object to the request body
             String accountJson = account.toString();
             conn.getOutputStream().write(accountJson.getBytes());
-
             // Get the response code and response message
             int responseCode = conn.getResponseCode();
             String responseMessage = conn.getResponseMessage();
@@ -85,7 +82,6 @@ public class SellingCompanyService {
     public SellingCompany updateSellingCompany(String targetedName, SellingCompany sellingCompany) {
         SellingCompany targetedSellingCompany = getSellingCompanyByName(targetedName);
         if (targetedSellingCompany == null) return null;
-
         // Update selling company using product service
         targetedSellingCompany.setName(sellingCompany.getName());
         targetedSellingCompany.setPassword(sellingCompany.getPassword());
@@ -93,7 +89,6 @@ public class SellingCompanyService {
         entityManager.getTransaction().begin();
         entityManager.merge(targetedSellingCompany);
         entityManager.getTransaction().commit();
-
         // Update account using account service
         JsonObject account = Json.createObjectBuilder()
                 .add("username", sellingCompany.getName())
@@ -101,7 +96,6 @@ public class SellingCompanyService {
                 .add("type", "Selling_Company")
                 .build();
         System.out.println(account);
-
         // Send request to account service
         try {
             URL url = new URL(accountServiceUrl + "/" + targetedName);
@@ -109,11 +103,9 @@ public class SellingCompanyService {
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
-
             // Write the account object to the request body
             String accountJson = account.toString();
             conn.getOutputStream().write(accountJson.getBytes());
-
             // Get the response code and response message
             int responseCode = conn.getResponseCode();
             String responseMessage = conn.getResponseMessage();
@@ -130,7 +122,6 @@ public class SellingCompanyService {
         entityManager.getTransaction().begin();
         entityManager.remove(sellingCompany);
         entityManager.getTransaction().commit();
-
         // Delete account using account service
         try {
             URL url = new URL(accountServiceUrl + "/delete/" + sellingCompany.getName());
@@ -138,7 +129,6 @@ public class SellingCompanyService {
             conn.setRequestMethod("DELETE");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
-
             // Get the response code and response message
             int responseCode = conn.getResponseCode();
             String responseMessage = conn.getResponseMessage();
@@ -163,7 +153,6 @@ public class SellingCompanyService {
                 .setParameter("sellingCompanyName", sellingCompanyName)
                 .getResultList();
     */
-
         SellingCompany sellingCompany = getSellingCompanyByName(sellingCompanyName);
         return sellingCompany.getProducts();
     }
@@ -177,7 +166,6 @@ public class SellingCompanyService {
             sellingCompany.removeProduct(product);
             entityManager.getTransaction().begin();
             entityManager.merge(sellingCompany);
-
             //remove from products table
             entityManager.remove(product);
             entityManager.getTransaction().commit();
@@ -221,30 +209,26 @@ public class SellingCompanyService {
     public List<RepresentativeName> getAssignedRepresentativeNames() {
         return entityManager.createQuery("SELECT r FROM RepresentativeName r LEFT JOIN SellingCompany s ON r.name = s.name WHERE s.name IS NOT NULL ", RepresentativeName.class).getResultList();
     }
+
     public List<List<String>> getNotification(String sellerUsername) {
         try {
             URL url = new URL(notificationServiceUrl + "/receiver/" + sellerUsername);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
-
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             }
-
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder responseBuilder = new StringBuilder();
             String output;
-
             while ((output = br.readLine()) != null) {
                 responseBuilder.append(output);
             }
-
             conn.disconnect();
             String response = responseBuilder.toString();
             System.out.println("Response: " + response); // print the response string
             JSONArray jsonArray = new JSONArray(response);
-
             List<List<String>> notifications = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -264,10 +248,9 @@ public class SellingCompanyService {
         }
     }
 
-    public void updateSellingRequest(String sellerUsername, int sellingRequestId, String response){
+    public void updateSellingRequest(String sellerUsername, int sellingRequestId, String response) {
         try {
             System.out.println("Starting to update selling request with response " + response);
-
             // Get the notification for the selling request
             System.out.println("Getting notification for seller " + sellerUsername + " and selling request ID " + sellingRequestId);
             List<List<String>> notifications = getNotification(sellerUsername);
@@ -276,7 +259,8 @@ public class SellingCompanyService {
                 return;
             }
             String notificationId = null;
-            String orderId= null;
+            String orderId = null;
+            String customerUsername = null;
             for (List<String> notification : notifications) {
                 if (notification.get(0).equals(String.valueOf(sellingRequestId))) {
                     notificationId = notification.get(0);
@@ -285,7 +269,6 @@ public class SellingCompanyService {
                     System.out.println("notification.get(0): " + notification.get(0));
                     System.out.println("notification.get(2): " + notification.get(2));
                     System.out.println("messageArray: " + Arrays.toString(messageArray));
-
                     if (messageArray.length < 2) {
                         System.err.println("Error: messageArray does not have enough elements");
                         return;
@@ -293,7 +276,8 @@ public class SellingCompanyService {
                     orderId = messageArray[1].trim();
                     orderId = orderId.replace(".", "");
                     System.out.println("Order id: " + orderId);
-
+                    customerUsername = notification.get(3);
+                    System.out.println("Customer username:" + customerUsername);
                     break;
                 }
             }
@@ -301,12 +285,87 @@ public class SellingCompanyService {
                 System.err.println("Error: notification not found for selling request ID " + sellingRequestId);
                 return;
             }
-
             // Update the selling request
             System.out.println("Updating selling request with response " + response);
             String state;
             if (response.equalsIgnoreCase("yes")) {
                 state = "processing";
+                // send notification to customer
+                URL urlNotification = new URL(notificationServiceUrl );
+                JsonObject notification = Json.createObjectBuilder()
+                        .add("targeted_username", customerUsername)
+                        .add("sender_username", sellerUsername)
+                        .add("request", false)
+                        .add("message","Your order: "+orderId+" is accepted!")
+                        .add("date", java.time.LocalDate.now().toString())
+                        .build();
+                System.out.println(notification);
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) urlNotification.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    // Write the notification object to the request body
+                    String notificationJson = notification.toString();
+                    conn.getOutputStream().write(notificationJson.getBytes());
+
+                    // Get the response code and response message
+                    int responseCode = conn.getResponseCode();
+                    String responseMessage = conn.getResponseMessage();
+                    System.out.println("Response code: " + responseCode);
+                    System.out.println("Response message: " + responseMessage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+                if (customerUsername != null) {
+                    try {
+                        // send request to shipping
+                        URL url = new URL(shippingServiceUrl + "/request_shipping");
+                        String message = "New shipping request with order id: " + orderId + ";" + customerUsername;
+
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "text/plain");
+                        conn.setRequestProperty("Accept", "application/json");
+                        conn.setDoOutput(true);
+
+                        String input = message;
+                        OutputStream os = conn.getOutputStream();
+                        os.write(input.getBytes());
+                        os.flush();
+
+                        // Get the response code and response message
+                        int responseCode = conn.getResponseCode();
+                        String responseMessage = conn.getResponseMessage();
+                        System.out.println("Response code: " + responseCode);
+                        System.out.println("Response message: " + responseMessage);
+
+                        if (conn.getResponseCode() != 200) {
+                            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+                        }else{
+                            System.out.println("Request shipping sent");
+                        }
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+                        StringBuilder responseBuilder = new StringBuilder();
+                        String output;
+                        while ((output = br.readLine()) != null) {
+                            responseBuilder.append(output);
+                            System.out.println("Output: " + output);
+                        }
+                        conn.disconnect();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
             } else {
                 state = "failed";
             }
@@ -317,16 +376,13 @@ public class SellingCompanyService {
             conn.setRequestProperty("Content-Type", "text/plain");
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoOutput(true);
-
             OutputStream os = conn.getOutputStream();
             os.write(state.getBytes());
             os.flush();
             os.close();
-
             System.out.println("Response Code: " + conn.getResponseCode());
-
             conn.disconnect();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Failed to change state: " + e.getMessage());
         }
     }

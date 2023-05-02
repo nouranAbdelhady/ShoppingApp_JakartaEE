@@ -318,7 +318,7 @@ public class UserService {
                     state = state.substring(0, state.length() - 1);
                 }
 
-                if (state.equals("created")) {
+                if (state.equals("created") || state.equals("processing")) {
                     List<String> order = new ArrayList<>();
                     order.add(username);
                     order.add(productId);
