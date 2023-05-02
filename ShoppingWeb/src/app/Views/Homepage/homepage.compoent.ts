@@ -5,9 +5,10 @@ import {AuthService} from "../../Accounts/User/auth.service";
 import {Router} from "@angular/router";
 
 
-const notificationUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/notifactions'
+const notificationUrl1 = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/notifactions'
+const notificationUrl2 = 'http://localhost:9314/OrderService-1.0-SNAPSHOT/api/notifactions'
 const sendUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/send'
-
+const notificationSellingUrl = 'http://localhost:9314/ProductService-1.0-SNAPSHOT/api/selling_company'
 
 @Component({
   selector: 'app-homepage-component',
@@ -18,8 +19,9 @@ const sendUrl = 'http://localhost:8080/ShippingService-1.0-SNAPSHOT/api/send'
 @Injectable({
   providedIn: 'root'
 })
-export class HomepageComponent implements OnInit{
-  constructor(private http: HttpClient, private authService: AuthService, private router : Router) { }
+export class HomepageComponent implements OnInit {
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
+  }
 
   ngOnInit(): void {
     console.log("Homepage init");
@@ -52,11 +54,11 @@ export class HomepageComponent implements OnInit{
   };
   loggedIn = false;
 
-  getLoggedInUser(){
+  getLoggedInUser() {
     this.authService.getLoggedInUser().subscribe({
       next: (res) => {
-        console.log("Homepage: "+res)
-        if(res != null){
+        console.log("Homepage: " + res)
+        if (res != null) {
           console.log("User logged in")
           this.loggedIn = true;
           this.loggedInUser = res;
@@ -67,7 +69,7 @@ export class HomepageComponent implements OnInit{
   }
 
   logoutUser(): void {
-    if (this.loggedInUser.type == "Customer"){
+    if (this.loggedInUser.type == "Customer") {
       // notify that cart will be emptied (Ok/Cancel)
       if (confirm("Are you sure you want to logout? Your cart will be emptied.")) {
         // Logout
@@ -115,19 +117,30 @@ export class HomepageComponent implements OnInit{
   }
 
   getNotifications() {
-    this.http.get<any[]>(`${notificationUrl}/receiver/${this.loggedInUser.username}`).subscribe({
+    this.http.get<any[]>(`${notificationUrl1}/receiver/${this.loggedInUser.username}`).subscribe({
       next: (res) => {
         console.log("Notifications: ");
         console.log(res);
         this.notificationList = res;
         this.notificationCount = res.length;
+
+        // Append data from another URL
+        this.http.get<any[]>(`${notificationUrl2}/receiver/${this.loggedInUser.username}`).subscribe({
+          next: (res2) => {
+            console.log("Additional Notifications: ");
+            console.log(res2);
+            this.notificationList = this.notificationList.concat(res2);
+            this.notificationCount = this.notificationList.length;
+          }
+        });
       }
     })
   }
 
   acceptNotification(notificationId: number) {
     console.log("Accepting notification: " + notificationId);
-    if (this.loggedInUser.type="Shipping_company"){
+    console.log("User type: " + this.loggedInUser.type)
+    if (this.loggedInUser.type == "Shipping_Company") {
       console.log("Shipping company");
       this.http.get<void>(`${sendUrl}/review_request/${notificationId}/YES`).subscribe({
         next: () => {
@@ -135,12 +148,22 @@ export class HomepageComponent implements OnInit{
           this.getNotifications();    //update notifications
         }
       })
+    } else {
+      if (this.loggedInUser.type == "Selling_Company") {
+        console.log("Selling company");
+        this.http.get<void>(`${notificationSellingUrl}/updateOrderState/${this.loggedInUser.username}/${notificationId}/yes`).subscribe({
+          next: () => {
+            console.log("Accepted Notification!");
+            this.getNotifications();    //update notifications
+          }
+        })
+      }
     }
   }
 
   rejectNotification(notificationId: any) {
     console.log("Rejecting notification: " + notificationId);
-    if (this.loggedInUser.type="Shipping_company"){
+    if (this.loggedInUser.type == "Shipping_Company") {
       console.log("Shipping company");
       this.http.get<void>(`${sendUrl}/review_request/${notificationId}/NO`).subscribe({
         next: () => {
@@ -148,6 +171,16 @@ export class HomepageComponent implements OnInit{
           this.getNotifications();    //update notifications
         }
       })
+    } else {
+      if (this.loggedInUser.type == "Selling_Company") {
+        console.log("Selling company");
+        this.http.get<void>(`${notificationSellingUrl}/updateOrderState/${this.loggedInUser.username}/${notificationId}/no`).subscribe({
+          next: () => {
+            console.log("Rejected Notification!");
+            this.getNotifications();    //update notifications
+          }
+        })
+      }
     }
   }
 

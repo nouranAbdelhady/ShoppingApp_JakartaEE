@@ -368,6 +368,36 @@ public class SellingCompanyService {
 
             } else {
                 state = "failed";
+
+                // send notification to customer
+                URL urlNotification = new URL(notificationServiceUrl );
+                JsonObject notification = Json.createObjectBuilder()
+                        .add("targeted_username", customerUsername)
+                        .add("sender_username", sellerUsername)
+                        .add("request", false)
+                        .add("message","Your order: "+orderId+" is rejected!")
+                        .add("date", java.time.LocalDate.now().toString())
+                        .build();
+                System.out.println(notification);
+                try {
+                    HttpURLConnection conn = (HttpURLConnection) urlNotification.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoOutput(true);
+
+                    // Write the notification object to the request body
+                    String notificationJson = notification.toString();
+                    conn.getOutputStream().write(notificationJson.getBytes());
+
+                    // Get the response code and response message
+                    int responseCode = conn.getResponseCode();
+                    String responseMessage = conn.getResponseMessage();
+                    System.out.println("Response code: " + responseCode);
+                    System.out.println("Response message: " + responseMessage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             URL url = new URL(orderServiceUrl + "/updateState/" + orderId);
             System.out.println("Connecting to URL: " + url);
@@ -382,6 +412,19 @@ public class SellingCompanyService {
             os.close();
             System.out.println("Response Code: " + conn.getResponseCode());
             conn.disconnect();
+
+            // remove notification
+            System.out.println("Removing notification with ID " + notificationId);
+            URL urlNotification = new URL(notificationServiceUrl + "/" + notificationId);
+            System.out.println("Connecting to URL: " + urlNotification);
+            HttpURLConnection connNotification = (HttpURLConnection) urlNotification.openConnection();
+            connNotification.setRequestMethod("DELETE");
+            connNotification.setRequestProperty("Content-Type", "application/json");
+            connNotification.setRequestProperty("Accept", "application/json");
+            connNotification.setDoOutput(true);
+            System.out.println("Response Code: " + connNotification.getResponseCode());
+            connNotification.disconnect();
+
         } catch (Exception e) {
             System.err.println("Failed to change state: " + e.getMessage());
         }

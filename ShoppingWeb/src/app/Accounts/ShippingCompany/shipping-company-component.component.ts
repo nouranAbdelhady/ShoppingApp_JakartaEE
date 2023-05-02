@@ -60,14 +60,4 @@ export class ShippingCompanyComponent implements OnInit{
     this.showForm = !this.showForm;
     this.createRegionFormShown = false;
   }
-
-  viewShippingRequests() {
-
-  }
-
-  viewAcceptedRequests(){
-
-  }
-
-
 }
