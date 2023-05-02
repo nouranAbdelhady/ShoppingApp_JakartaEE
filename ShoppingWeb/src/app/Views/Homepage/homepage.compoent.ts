@@ -159,6 +159,8 @@ export class HomepageComponent implements OnInit {
         })
       }
     }
+    // Refresh the page
+    window.location.reload();
   }
 
   rejectNotification(notificationId: any) {
@@ -182,6 +184,8 @@ export class HomepageComponent implements OnInit {
         })
       }
     }
+    // Refresh the page
+    window.location.reload();
   }
 
 }
