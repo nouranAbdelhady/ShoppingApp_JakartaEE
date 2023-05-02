@@ -5,9 +5,18 @@ import jakarta.ejb.Stateless;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Stateless
@@ -17,12 +26,17 @@ public class SellingCompanyService {
 
     private final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-    private String accountServiceUrl= "http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts";
+    private String accountServiceUrl = "http://localhost:16957/AccountService-1.0-SNAPSHOT/api/accounts";
+
+    private String notificationServiceUrl = "http://localhost:9314/OrderService-1.0-SNAPSHOT/api/notifactions";
+
+    private String orderServiceUrl = "http://localhost:9314/OrderService-1.0-SNAPSHOT/api/orders";
 
     public void addSellingCompany(SellingCompany sellingCompany) {
         entityManager.getTransaction().begin();
         entityManager.persist(sellingCompany);
-        entityManager.getTransaction().commit();;
+        entityManager.getTransaction().commit();
+        ;
 
         // Add account using account service
         JsonObject account = Json.createObjectBuilder()
@@ -68,7 +82,7 @@ public class SellingCompanyService {
         return entityManager.createQuery("SELECT s FROM SellingCompany s", SellingCompany.class).getResultList();
     }
 
-    public SellingCompany updateSellingCompany(String targetedName,SellingCompany sellingCompany) {
+    public SellingCompany updateSellingCompany(String targetedName, SellingCompany sellingCompany) {
         SellingCompany targetedSellingCompany = getSellingCompanyByName(targetedName);
         if (targetedSellingCompany == null) return null;
 
@@ -90,7 +104,7 @@ public class SellingCompanyService {
 
         // Send request to account service
         try {
-            URL url = new URL(accountServiceUrl+"/"+targetedName);
+            URL url = new URL(accountServiceUrl + "/" + targetedName);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -119,7 +133,7 @@ public class SellingCompanyService {
 
         // Delete account using account service
         try {
-            URL url = new URL(accountServiceUrl+"/delete/"+sellingCompany.getName());
+            URL url = new URL(accountServiceUrl + "/delete/" + sellingCompany.getName());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("DELETE");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -207,5 +221,115 @@ public class SellingCompanyService {
     public List<RepresentativeName> getAssignedRepresentativeNames() {
         return entityManager.createQuery("SELECT r FROM RepresentativeName r LEFT JOIN SellingCompany s ON r.name = s.name WHERE s.name IS NOT NULL ", RepresentativeName.class).getResultList();
     }
+    public List<List<String>> getNotification(String sellerUsername) {
+        try {
+            URL url = new URL(notificationServiceUrl + "/receiver/" + sellerUsername);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder responseBuilder = new StringBuilder();
+            String output;
+
+            while ((output = br.readLine()) != null) {
+                responseBuilder.append(output);
+            }
+
+            conn.disconnect();
+            String response = responseBuilder.toString();
+            System.out.println("Response: " + response); // print the response string
+            JSONArray jsonArray = new JSONArray(response);
+
+            List<List<String>> notifications = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String id = String.valueOf(jsonObject.getInt("id"));
+                String targetedUsername = jsonObject.getString("targeted_username");
+                String message = jsonObject.getString("message");
+                String senderUsername = jsonObject.getString("sender_username");
+                String date = jsonObject.getString("date");
+                String request = String.valueOf(jsonObject.getBoolean("request"));
+                List<String> notification = Arrays.asList(id, targetedUsername, message, senderUsername, date, request);
+                notifications.add(notification);
+            }
+            return notifications;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void updateSellingRequest(String sellerUsername, int sellingRequestId, String response){
+        try {
+            System.out.println("Starting to update selling request with response " + response);
+
+            // Get the notification for the selling request
+            System.out.println("Getting notification for seller " + sellerUsername + " and selling request ID " + sellingRequestId);
+            List<List<String>> notifications = getNotification(sellerUsername);
+            if (notifications == null) {
+                System.err.println("Failed to get notifications for seller " + sellerUsername);
+                return;
+            }
+            String notificationId = null;
+            String orderId= null;
+            for (List<String> notification : notifications) {
+                if (notification.get(0).equals(String.valueOf(sellingRequestId))) {
+                    notificationId = notification.get(0);
+                    //Get order id from message
+                    String[] messageArray = notification.get(2).split("ID");
+                    System.out.println("notification.get(0): " + notification.get(0));
+                    System.out.println("notification.get(2): " + notification.get(2));
+                    System.out.println("messageArray: " + Arrays.toString(messageArray));
+
+                    if (messageArray.length < 2) {
+                        System.err.println("Error: messageArray does not have enough elements");
+                        return;
+                    }
+                    orderId = messageArray[1].trim();
+                    orderId = orderId.replace(".", "");
+                    System.out.println("Order id: " + orderId);
+
+                    break;
+                }
+            }
+            if (notificationId == null) {
+                System.err.println("Error: notification not found for selling request ID " + sellingRequestId);
+                return;
+            }
+
+            // Update the selling request
+            System.out.println("Updating selling request with response " + response);
+            String state;
+            if (response.equalsIgnoreCase("yes")) {
+                state = "processing";
+            } else {
+                state = "failed";
+            }
+            URL url = new URL(orderServiceUrl + "/updateState/" + orderId);
+            System.out.println("Connecting to URL: " + url);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "text/plain");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            os.write(state.getBytes());
+            os.flush();
+            os.close();
+
+            System.out.println("Response Code: " + conn.getResponseCode());
+
+            conn.disconnect();
+        } catch (Exception e){
+            System.err.println("Failed to change state: " + e.getMessage());
+        }
+    }
 
 }
+

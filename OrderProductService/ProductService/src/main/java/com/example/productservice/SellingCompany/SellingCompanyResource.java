@@ -109,4 +109,16 @@ public class SellingCompanyResource {
     public List<RepresentativeName> getAllUnassignedRepresentativeNames() {
         return sellingCompanyService.getUnassignedRepresentativeNames();
     }
+
+    @GET
+    @Path("/notificationId/{sellerUsername}")
+    public List<List<String>> getNotificationId(@PathParam("sellerUsername") String sellerUsername){
+        return sellingCompanyService.getNotification(sellerUsername);
+    }
+
+    @GET
+    @Path("/updateOrderState/{sellerusername}/{sellingRequestId}/{response}")
+    public void updateSellingRequest(@PathParam("sellerusername") String sellerUsername, @PathParam("sellingRequestId") int sellingRequestId,@PathParam("response") String response) {
+         sellingCompanyService.updateSellingRequest(sellerUsername,sellingRequestId,response);
+    }
 }
